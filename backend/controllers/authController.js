@@ -9,12 +9,14 @@ exports.register = async (req, res) => {
     if (existUser) {
       res.status(400).json({ error: "User already exists" });
     }
-    const newUser = await new User({ name, email, password });
+    const newUser = new User({ name, email, password });
     await newUser.save();
+    console.log("New user created", newUser);
+    
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
-    res.json({ token: token, user: newUser.email });
+    res.status(201).json({ token: token, user: newUser.email });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -33,11 +35,13 @@ exports.login = async (req, res) => {
     if (!matchUser) {
       res.status(400).json({ error: "Invalid credentials!" });
     }
-
+    
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
+        expiresIn: "1d",
     });
-    res.json({ token: token, user: user.email });
+    
+    console.log("logges in successfull", user);
+    res.status(201).json({ token: token, user: user.email });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
