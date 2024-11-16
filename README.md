@@ -22,13 +22,13 @@ npm -v
 ```bash
 git clone https://github.com/NayanCod/Quiz-App.git
 ```
-
+## Backend Setup
 - **Navigate to the backend Directory**
 ```bash
 cd backend
 ```
 
--**Setup the Environment variables**
+- **Setup the Environment variables**
 Create a .env file in the backend directory:
 ```bash
 touch .env
