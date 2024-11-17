@@ -4,6 +4,9 @@
 /yarn.lock
 /pnpm-lock.yaml
 
+
+serviceAccountKey.json
+
 # Environment variables
 .env
 .env.local
