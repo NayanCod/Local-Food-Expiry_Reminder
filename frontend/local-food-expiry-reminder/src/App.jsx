@@ -1,10 +1,15 @@
 import React from 'react'
+import "preline/preline";
+import Header from './components/Header';
+import Hero from './components/Hero';
+
 
 function App() {
   return (
-    <div className='bg-black min-h-screen text-white text-center'>
-      <h1>Local Food Expiry Reminder</h1>
-    </div>
+    <>
+      <Header/>
+      <Hero/>
+    </>
   )
 }
 
