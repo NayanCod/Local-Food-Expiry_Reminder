@@ -5,6 +5,8 @@ const cors = require('cors');
 const authRoutes = require("./routes/authRoutes.js");
 const itemRoutes = require("./routes/itemRoutes.js");
 
+require('./scheduler.js');
+
 dotenv.config();
 connectDB();
 
