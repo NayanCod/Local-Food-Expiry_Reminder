@@ -1,6 +1,7 @@
-import React from "react";
+import { Link } from "react-router-dom";
 
 function Hero() {
+  const isAuthenticated = !!localStorage.getItem("jwtToken");
   return (
     <div className="bg-blue-600 ">
       <div className="max-w-[85rem] flex flex-col  justify-center items-center gap-y-6 mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-8 ">
@@ -17,9 +18,8 @@ function Hero() {
         </div>
 
         <div className="text-center">
-          <a
+          <Link to={isAuthenticated ? "/home" : "/login"}
             className="inline-flex justify-center items-center gap-x-3 text-center bg-white shadow-lg shadow-transparent hover:shadow-blue-700/50 border border-transparent text-blue-500 text-sm font-medium rounded-full focus:outline-none focus:shadow-blue-700/50 py-3 px-6"
-            href="#"
           >
             Get started
             <svg
@@ -33,7 +33,7 @@ function Hero() {
             >
               <path d="m9 18 6-6-6-6" />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
     </div>

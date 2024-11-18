@@ -40,7 +40,7 @@ exports.login = async (req, res) => {
         expiresIn: "1d",
     });
     
-    console.log("logges in successfull", user);
+    console.log("logged in successfully", user);
     res.status(201).json({ token: token, user: user.email });
   } catch (error) {
     res.status(400).json({ error: error.message });
