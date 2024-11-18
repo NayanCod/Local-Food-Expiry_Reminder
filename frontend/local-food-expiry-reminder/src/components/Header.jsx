@@ -21,7 +21,7 @@ function Header() {
             <div className="sm:hidden">
               <button
                 type="button"
-                className="hs-collapse-toggle relative size-7 flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/10"
+                className="hs-collapse-toggle  size-7 flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/10"
                 id="hs-navbar-example-collapse"
                 aria-expanded="false"
                 aria-controls="hs-navbar-example"
@@ -83,19 +83,19 @@ function Header() {
                 My List
               </a>
               <a
-                className="font-medium text-gray-600 hover:text-gray-400 focus:outline-none focus:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
+                className="relative font-medium text-gray-600 hover:text-gray-400 focus:outline-none focus:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
                 href="#"
               >
                 Alerts
               </a>
 
               {/* Account */}
-              <div className="inline-flex">
+              <div className="inline-flex ">
                 <button
                   id="hs-dropdown-custom-trigger"
                   type="button"
                   onClick={toggleDropdown}
-                  className={`p-2 border border-gray-500 rounded-full ${
+                  className={`p-2 relative md:static border border-gray-500 rounded-full ${
                     isOpen ? "aria-expanded" : ""
                   }`}
                   aria-haspopup="menu"
@@ -111,18 +111,8 @@ function Header() {
                 </button>
 
                 {isOpen && (
-                  <div
-                    className="absolute md:top-14 md:right-0"
-                    
-                  >
-                    <div className="p-1 space-y-0.5">
-                      <a
-                        className="flex items-center gap-x-3.5 p-2 rounded-lg text-sm text-red-600 hover:bg-red-400 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-                        href="#"
-                      >
-                        <span className="text-red-600">Logout</span>
-                      </a>
-                    </div>
+                  <div className="absolute left-14 md:left-auto sm:top-14 sm:right-0 sm:left-auto md:right-0 md:top-14 w-auto bg-black rounded-md">
+                    <button className="text-red-500 hover:bg-gray-600 px-4 py-2 rounded-md">Logout</button>
                   </div>
                 )}
               </div>
