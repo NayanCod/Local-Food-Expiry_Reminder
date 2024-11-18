@@ -2,8 +2,8 @@ import React from "react";
 
 function Hero() {
   return (
-    <div className="bg-blue-600 min-h-[90vh]">
-      <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-8">
+    <div className="bg-blue-600 ">
+      <div className="max-w-[85rem] flex flex-col  justify-center items-center gap-y-6 mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-8 ">
         <div className="max-w-3xl text-center mx-auto">
           <h1 className="block font-medium text-gray-200 text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
           Never Let Food Go to Waste
