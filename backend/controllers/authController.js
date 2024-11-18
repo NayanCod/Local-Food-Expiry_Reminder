@@ -46,3 +46,21 @@ exports.login = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+exports.storeFCMToken = async(req, res) => {
+  try {
+    const { fcmToken } = req.body;
+    const userId = req.user.id; // Extracted from JWT token
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).send("User not found");
+
+    user.fcmToken = fcmToken;
+    await user.save();
+
+    res.status(201).send("FCM token updated successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error updating FCM token");
+  }
+}
