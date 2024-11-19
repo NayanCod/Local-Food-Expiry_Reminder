@@ -1,7 +1,7 @@
 const schedule = require("node-schedule");
-const Item = require("./models/Item");
-const User = require("./models/User");
-const admin = require("./firebase"); 
+const Item = require("./model/Item.js");
+const User = require("./model/User.js");
+const admin = require("./firebase.js"); 
 
 const checkExpiringItems = async () => {
   try {

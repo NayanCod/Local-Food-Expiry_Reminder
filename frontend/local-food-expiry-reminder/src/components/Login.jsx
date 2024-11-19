@@ -1,7 +1,30 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, Navigate } from "react-router-dom";
+import axios from "axios";
 function Login() {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [error, setError] = useState();
+
+  const handleLogin = async(e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:8080/api/auth/login', {
+        email,
+        password,
+      });
+      const {token} = response.data;
+      if(token){
+        localStorage.setItem('token', token);
+        console.log('Logged In Successfully');
+        Navigate('/home');
+      }
+    } catch (error) {
+      setError(error.response?.data?.error || 'Login failed');
+    }
+  }
+
   return (
-    // TODO: Make login form having field email and password only and at last signup Link if not have account
     <div className=" bg-gray-700 min-h-screen flex justify-center items-center">
       <div className="md:w-2/5 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-900 dark:border-neutral-700">
         <div className="p-4 sm:p-7">
@@ -10,7 +33,7 @@ function Login() {
               Sign in
             </h1>
             <p className="mt-2 text-sm text-gray-600 dark:text-neutral-400">
-              Don't have an account yet?
+              Do not have an account yet?
               <Link
                 className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
                 to="/signup"
@@ -56,7 +79,7 @@ function Login() {
               Or
             </div>
 
-            <form>
+            <form onSubmit={handleLogin}>
               <div className="grid gap-y-4">
                 <div>
                   <label
@@ -73,6 +96,8 @@ function Login() {
                       className="py-3 px-4 block border w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                       required
                       aria-describedby="email-error"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                     <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
                       <svg
@@ -119,6 +144,8 @@ function Login() {
                       className="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                       required
                       aria-describedby="password-error"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
                       <svg
@@ -159,6 +186,8 @@ function Login() {
                     </label>
                   </div>
                 </div>
+
+                <p className="text-red-500 text-sm font-semibold">{error}</p>
 
                 <button
                   type="submit"

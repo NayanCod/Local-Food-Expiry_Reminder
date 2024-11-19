@@ -1,5 +1,33 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, Navigate } from "react-router-dom";
+import axios from "axios";
+
 function Signup() {
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [error, setError] = useState();
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/register",
+        {
+          name,
+          email,
+          password,
+        }
+      );
+      const {user} = response.data;
+      if(user){
+        Navigate('/login');
+        alert("user successfully registered!");
+      }
+    } catch (error) {
+      setError(error.response?.data?.error || "Register failed!");
+    }
+  };
   return (
     // TODO: Make Signup form having field name, email and password and at last login Link if already have an account
     <div className=" bg-gray-700 min-h-screen flex justify-center items-center">
@@ -56,8 +84,40 @@ function Signup() {
               Or
             </div>
 
-            <form>
+            <form onSubmit={handleSignup}>
               <div className="grid gap-y-4">
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block text-sm mb-2 dark:text-white"
+                  >
+                    Name
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      className="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                      required
+                      aria-describedby="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                    <div className="hidden absolute inset-y- pointer-events-none pe-3">
+                      <svg
+                        className="size-5 text-red-500"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        viewBox="0 0 16 16"
+                        aria-hidden="true"
+                      >
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
                 <div>
                   <label
                     htmlFor="email"
@@ -73,6 +133,8 @@ function Signup() {
                       className="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                       required
                       aria-describedby="email-error"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                     <div className="hidden absolute inset-y- pointer-events-none pe-3">
                       <svg
@@ -111,6 +173,8 @@ function Signup() {
                       className="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                       required
                       aria-describedby="password-error"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <div className="hidden absolute inset-y- pointer-events-none pe-3">
                       <svg
@@ -130,43 +194,6 @@ function Signup() {
                     id="password-error"
                   >
                     8+ characters required
-                  </p>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="confirm-password"
-                    className="block text-sm mb-2 dark:text-white"
-                  >
-                    Confirm Password
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="password"
-                      id="confirm-password"
-                      name="confirm-password"
-                      className="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                      required
-                      aria-describedby="confirm-password-error"
-                    />
-                    <div className="hidden absolute inset-y- pointer-events-none pe-3">
-                      <svg
-                        className="size-5 text-red-500"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                        aria-hidden="true"
-                      >
-                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                      </svg>
-                    </div>
-                  </div>
-                  <p
-                    className="hidden text-xs text-red-600 mt-2"
-                    id="confirm-password-error"
-                  >
-                    Password does not match the password
                   </p>
                 </div>
 
@@ -194,6 +221,8 @@ function Signup() {
                     </label>
                   </div>
                 </div>
+
+                <p className="text-red-500 text-sm font-semibold">{error}</p>
 
                 <button
                   type="submit"
