@@ -5,7 +5,7 @@
 /pnpm-lock.yaml
 
 
-serviceAccountKey.json
+config/serviceAccountKey.json
 
 # Environment variables
 .env

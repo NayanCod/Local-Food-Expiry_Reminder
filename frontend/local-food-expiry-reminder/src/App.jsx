@@ -11,7 +11,7 @@ import Home from "./components/Home";
 import Signup from "./components/Signup";
 
 const isAuthenticated = () => {
-  return !!localStorage.getItem("jwtToken");
+  return !!localStorage.getItem("token");
 };
 
 function App() {
@@ -21,8 +21,8 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={isAuthenticated() ? <Navigate to="/home" /> : <Login />} />
+        <Route path="/signup" element={isAuthenticated() ? <Navigate to="/home" /> : <Signup />} />
 
         <Route
           path="/home"

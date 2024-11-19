@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 function Signup() {
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [error, setError] = useState();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const Navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -19,8 +21,10 @@ function Signup() {
           password,
         }
       );
-      const {user} = response.data;
-      if(user){
+      console.log(response.data.user);
+      
+      // const {user} = response.data;
+      if(response.data?.user){
         Navigate('/login');
         alert("user successfully registered!");
       }
@@ -29,7 +33,6 @@ function Signup() {
     }
   };
   return (
-    // TODO: Make Signup form having field name, email and password and at last login Link if already have an account
     <div className=" bg-gray-700 min-h-screen flex justify-center items-center">
       <div className="md:w-2/5 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-900 dark:border-neutral-700">
         <div className="p-4 sm:p-7">
@@ -49,7 +52,7 @@ function Signup() {
           </div>
 
           <div className="mt-5">
-            <button
+            {/* <button
               type="button"
               className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
             >
@@ -82,7 +85,7 @@ function Signup() {
 
             <div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6 dark:text-neutral-500 dark:before:border-neutral-600 dark:after:border-neutral-600">
               Or
-            </div>
+            </div> */}
 
             <form onSubmit={handleSignup}>
               <div className="grid gap-y-4">
@@ -149,13 +152,6 @@ function Signup() {
                       </svg>
                     </div>
                   </div>
-                  <p
-                    className="hidden text-xs text-red-600 mt-2"
-                    id="email-error"
-                  >
-                    Please include a valid email address so we can get back to
-                    you
-                  </p>
                 </div>
 
                 <div>
@@ -188,37 +184,6 @@ function Signup() {
                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
                       </svg>
                     </div>
-                  </div>
-                  <p
-                    className="hidden text-xs text-red-600 mt-2"
-                    id="password-error"
-                  >
-                    8+ characters required
-                  </p>
-                </div>
-
-                <div className="flex items-center">
-                  <div className="flex">
-                    <input
-                      id="remember-me"
-                      name="remember-me"
-                      type="checkbox"
-                      className="shrink-0 mt-0.5 border border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                    />
-                  </div>
-                  <div className="ms-3">
-                    <label
-                      htmlFor="remember-me"
-                      className="text-sm dark:text-white"
-                    >
-                      I accept the{" "}
-                      <a
-                        className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
-                        href="#"
-                      >
-                        Terms and Conditions
-                      </a>
-                    </label>
                   </div>
                 </div>
 
