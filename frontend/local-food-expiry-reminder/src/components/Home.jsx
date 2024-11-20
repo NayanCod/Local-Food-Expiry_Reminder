@@ -119,7 +119,7 @@ function Home() {
           return (
             <div key={index}>
               <h2>{item?.name}</h2>
-              <h2>Expiry Date: {item?.expiryDate}</h2>
+              <h2>Expiry Date: {new Date(item?.expiryDate).toLocaleString()}</h2>
             </div>
           );
         })}
