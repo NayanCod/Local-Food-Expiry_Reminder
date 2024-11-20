@@ -10,11 +10,14 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import Signup from "./components/Signup";
 
-const isAuthenticated = () => {
-  return !!localStorage.getItem("token");
-};
 
 function App() {
+
+  const isAuthenticated = () => {
+    console.log(!!localStorage.getItem("token"));
+    
+    return !!localStorage.getItem("token");
+  };
 
   return (
     <Router>

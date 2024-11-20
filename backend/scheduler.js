@@ -14,7 +14,7 @@ const checkExpiringItems = async () => {
     });
 
     expiringItems.forEach(async (item) => {
-      const user = await User.findById(item.userId);
+      const user = await User.findById(item.user);
       if (user && user.fcmToken) {
         await admin.messaging().send({
           token: user.fcmToken,

@@ -25,7 +25,7 @@ function Signup() {
       
       // const {user} = response.data;
       if(response.data?.user){
-        Navigate('/login');
+        Navigate("/login");
         alert("user successfully registered!");
       }
     } catch (error) {

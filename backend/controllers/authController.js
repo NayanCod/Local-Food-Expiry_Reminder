@@ -1,3 +1,4 @@
+const Item = require("../model/Item.js");
 const User = require("../model/User.js");
 const jwt = require("jsonwebtoken");
 
@@ -58,7 +59,11 @@ exports.storeFCMToken = async(req, res) => {
     user.fcmToken = fcmToken;
     await user.save();
 
-    res.status(201).send("FCM token updated successfully");
+    const items = await Item.find({user: req.user.id});
+    console.log("This users items: ", items);
+    
+
+    res.status(201).json({message: "FCM token updated successfully"});
   } catch (error) {
     console.error(error);
     res.status(500).send("Error updating FCM token");

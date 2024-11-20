@@ -17,8 +17,8 @@ function Login() {
       });
       if(response.data?.token){
         localStorage.setItem('token', response.data?.token);
+        Navigate("/home");
         console.log('Logged In Successfully');
-        Navigate('/home');
       }
     } catch (error) {
       setError(error.response?.data?.error || 'Login failed');
