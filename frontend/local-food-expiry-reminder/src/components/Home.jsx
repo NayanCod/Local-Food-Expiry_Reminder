@@ -53,7 +53,7 @@ function Home() {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      console.log("USERS ITEMS", res.data);
+      // console.log("USERS ITEMS", res.data);
 
       setItems(res.data?.data);
       setLoading(false);
