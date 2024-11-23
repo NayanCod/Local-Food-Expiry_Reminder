@@ -5,7 +5,7 @@ import App from "./App.jsx";
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
-    .register('/firebase-messaging-sw.js')
+    .register('/firebase-messaging-sw.js', { scope: "/" })
     .then((registration) => {
       console.log('Service Worker registered with scope:', registration.scope);
     })

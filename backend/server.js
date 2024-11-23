@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const authRoutes = require("./routes/authRoutes.js");
 const itemRoutes = require("./routes/itemRoutes.js");
+const notifyRoute = require("./routes/notifyRoute.js");
 
 require('./scheduler.js');
 
@@ -18,6 +19,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/items', itemRoutes);
+app.use('/api/notification', notifyRoute);
 
 app.listen(PORT, () => {
     console.log(`Server is listening to PORT ${PORT}`);
