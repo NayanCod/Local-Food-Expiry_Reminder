@@ -263,9 +263,9 @@ function Home() {
         <br></br>
         <h1>Your Items</h1>
         <div className="flex gap-4">
-          <button onClick={() => {disableAllFilter(); setAllItem(true)}}>All</button>
-          <button onClick={() => {disableAllFilter(); setFreshItem(true)}}>Fresh</button>
-          <button onClick={() => {disableAllFilter(); setExpiredItem(true)}}>Expired</button>
+          <button onClick={() => {disableAllFilter(); setAllItem(true)}} className="bg-gray-200 py-1.5 px-4 rounded-lg">All</button>
+          <button onClick={() => {disableAllFilter(); setFreshItem(true)}} className="bg-gray-200 py-1.5 px-4 rounded-lg">Fresh</button>
+          <button onClick={() => {disableAllFilter(); setExpiredItem(true)}} className="bg-gray-200 py-1.5 px-4 rounded-lg">Expired</button>
         </div>
         {
           allItem ? <AllItems items={items}/> : null
