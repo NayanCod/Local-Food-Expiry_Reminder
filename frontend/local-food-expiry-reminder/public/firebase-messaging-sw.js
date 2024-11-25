@@ -29,12 +29,6 @@ messaging.onBackgroundMessage(async (payload) => {
     ? payload.notification.title
     : "Notification Title";
 
-  const notificationData = {
-    title: payload.notification?.title || "Notification Title",
-    message: payload.notification?.body || "Notification Body",
-    timestamp: new Date().toISOString(),
-  };
-
   const notificationOptions = {
     body: payload.notification
       ? payload.notification.body
@@ -43,18 +37,4 @@ messaging.onBackgroundMessage(async (payload) => {
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
-
-    try {
-      await fetch("http://localhost:8080/api/notification", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3M2M2OWVmMzVlYWYzZWNkY2UzNzFmMiIsImlhdCI6MTczMjM0ODY3NywiZXhwIjoxNzMyNDM1MDc3fQ.vzzOCTajvlluaD1aNWpeyQJJzilF0_EhSpCA1id2cts`,
-        },
-        body: JSON.stringify(notificationData),
-      });
-      console.log("Notification saved to the database successfully.");
-    } catch (error) {
-      console.error("Failed to save notification to the database:", error);
-    }
 });

@@ -1,15 +1,27 @@
 import { useEffect, useState } from "react";
 import { getToken } from "firebase/messaging";
-import { messaging } from "../firebase";
+import { onMessage } from "firebase/messaging";
+import { messaging } from "../firebase.js";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axiosClient from "../../axiosConfig.js";
+import AllItems from "./AllItems.jsx";
+import FreshItems from "./FreshItems.jsx";
+import ExpiredItems from "./ExpiredItems.jsx";
 
 function Home() {
   const [items, setItems] = useState();
+  const [notifications, setNotifications] = useState();
   const [loading, setLoading] = useState(true);
   const [itemName, setItemName] = useState("");
   const [itemExpiryDate, setItemExpiryDate] = useState();
   const [addItemError, setAddItemError] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const [hoveredNotification, setHoveredNotification] = useState(false);
+  const [allItem, setAllItem] = useState(true);
+  const [expiredItem, setExpiredItem] = useState(false);
+  const [freshItem, setFreshItem] = useState(false);
 
   const authToken = localStorage.getItem("token");
 
@@ -49,11 +61,7 @@ function Home() {
 
   const fetchItems = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/items/getItems", {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+      const res = await axiosClient.get("/api/items/getItems");
       // console.log("USERS ITEMS", res.data);
 
       setItems(res.data?.data);
@@ -63,22 +71,26 @@ function Home() {
       setLoading(false);
     }
   };
+  const fetchNotifications = async () => {
+    try {
+      const res = await axiosClient.get("/api/notification");
+      // console.log("USERS ITEMS", res.data);
+
+      setNotifications(res.data?.data);
+      setLoading(false);
+    } catch (error) {
+      console.log("Error fetching notifications: ", error);
+      setLoading(false);
+    }
+  };
 
   const handleAddItem = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        "http://localhost:8080/api/items/addItem",
-        {
-          name: itemName,
-          expiryDate: itemExpiryDate,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
+      const res = await axiosClient.post("/api/items/addItem", {
+        name: itemName,
+        expiryDate: itemExpiryDate,
+      });
       console.log("Item added", res.data?.data);
 
       setItems((prevItems) => [...prevItems, res.data?.data]);
@@ -97,10 +109,49 @@ function Home() {
 
   const alertClick = () => {
     setShowAlert(!showAlert);
+  };
+
+  const disableAllFilter = () => {
+    setAllItem(false);
+    setExpiredItem(false);
+    setFreshItem(false);
   }
+
+  const handleReadNotify = async (id) => {
+    console.log(id);
+    const readNotifi = await axiosClient.put(`/api/notification/${id}`);
+    if (readNotifi) {
+      console.log("Notification read");
+      fetchNotifications();
+    } else {
+      console.log("error in reading notification");
+    }
+  };
+
   useEffect(() => {
     requestNotificationPermission();
     fetchItems();
+    fetchNotifications();
+
+    const unsubscribe = onMessage(messaging, async (payload) => {
+      console.log("foregournd message recieved", payload);
+
+      const { title, body } = payload.notification || {};
+      toast.info(`📢 ${title}: ${body}`);
+
+      try {
+        await axiosClient.post("/api/notification", {
+          title: title || "No Title",
+          message: body || "No Body",
+          timestamp: new Date().toISOString(),
+        });
+        fetchNotifications();
+      } catch (error) {
+        console.error("Failed to save notification:", error);
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
   if (loading) {
@@ -109,6 +160,7 @@ function Home() {
   } else {
     return (
       <>
+        <ToastContainer />
         <div className="w-full flex justify-between px-8 py-3 items-center">
           <div>ADD Item</div>
           <div className="relative">
@@ -118,7 +170,7 @@ function Home() {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="w-6 h-6"
+              className="w-6 h-6 cursor-pointer"
               onClick={alertClick}
             >
               <path
@@ -127,9 +179,63 @@ function Home() {
                 d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
               />
             </svg>
-            {
-              showAlert && <div className="absolute top-8 border-2 border-black rounded-lg z-10">hello</div>
-            }
+            {notifications?.filter((n) => !n.isRead).length ? <div className="absolute top-0 right-1
+             w-2 h-2 bg-red-500 rounded-full"></div> : null}
+            {showAlert && (
+              <div className="absolute w-80 top-8 right-0 border-2 p-3 border-black rounded-lg z-10">
+                {notifications.filter((notify) => !notify.isRead).length ===
+                0 ? (
+                  <p>No new notifications</p> // Show this message if no unread notifications exist
+                ) : (
+                  notifications
+                    .filter((notify) => !notify.isRead)
+                    .map((notify) => {
+                      {
+                        /* const isHovered = hoveredNotification === notify._id; */
+                      }
+                      return (
+                        <div
+                          key={notify.timestamp}
+                          className="relative p-2 my-2 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 duration-200"
+                          onMouseEnter={() => setHoveredNotification(true)} // Set hover state on mouse enter
+                          onMouseLeave={() => setHoveredNotification(false)} // Reset hover state on mouse leave
+                        >
+                          <h2>
+                            {notify.message.split(" ")[2]}{" "}
+                            {notify.message.split(" ")[3] === "is"
+                              ? ""
+                              : notify.message.split(" ")[3]}
+                          </h2>
+                          <p>{notify.message}</p>
+
+                          {/* Show handleClick notification when the notification is unread or hovered */}
+                          {!notify.isRead && hoveredNotification && (
+                            <div
+                              className="absolute top-3 right-3 transition-all duration-200"
+                              onClick={() => handleReadNotify(notify._id)}
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="w-4 h-4"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M6 18 18 6M6 6l12 12"
+                                />
+                              </svg>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })
+                )}
+              </div>
+            )}
           </div>
         </div>
         <form onSubmit={handleAddItem} className="border-2 p-4">
@@ -156,18 +262,21 @@ function Home() {
         <hr></hr>
         <br></br>
         <h1>Your Items</h1>
-        {items.map((item, index) => {
-          return (
-            <div key={index}>
-              <h2>
-                {item?.name} <span>{item?.notified ? " - Expired" : ""}</span>
-              </h2>
-              <h2>
-                Expiry Date: {new Date(item?.expiryDate).toLocaleString()}
-              </h2>
-            </div>
-          );
-        })}
+        <div className="flex gap-4">
+          <button onClick={() => {disableAllFilter(); setAllItem(true)}}>All</button>
+          <button onClick={() => {disableAllFilter(); setFreshItem(true)}}>Fresh</button>
+          <button onClick={() => {disableAllFilter(); setExpiredItem(true)}}>Expired</button>
+        </div>
+        {
+          allItem ? <AllItems items={items}/> : null
+        }
+        {
+          freshItem ? <FreshItems items={items} /> : null
+        }
+        {
+          expiredItem ? <ExpiredItems items={items}/> : null
+        }
+        
       </>
     );
   }

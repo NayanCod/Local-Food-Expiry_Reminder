@@ -6,7 +6,7 @@ exports.createItem = async (req, res) => {
     const newItem = new Item({ ...req.body, user: req.user.id });
     await newItem.save();
     console.log("New item created", newItem);
-    res.status(200).json({data: newItem});
+    res.status(200).json({ data: newItem });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -15,9 +15,13 @@ exports.createItem = async (req, res) => {
 // Get Items
 exports.getItems = async (req, res) => {
   try {
-    const items = await Item.find({ user: req.user.id });
+    const user = req.user.id;
+    if (!user) {
+      return res.status(500).send("User not found!");
+    }
+    const items = await Item.find({ user: user });
     console.log("user's items: ", items);
-    res.status(200).json({data: items});
+    res.status(200).json({ data: items });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
