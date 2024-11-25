@@ -1,4 +1,4 @@
-# Local food expiry reminder - Local Setup Guide
+# Local items expiry reminder - Local Setup Guide
 
 This guide will walk you through setting up and running the **Local food expiry reminder** API locally on your machine.
 
