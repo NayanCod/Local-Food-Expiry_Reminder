@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getToken } from "firebase/messaging";
 import { onMessage } from "firebase/messaging";
 import { messaging } from "../firebase.js";
@@ -26,6 +26,9 @@ function Home() {
   const [freshItem, setFreshItem] = useState(false);
   const [unreadTab, setUnreadTab] = useState(true);
   const [allAlertTab, setAllAlertTab] = useState(false);
+
+  const notificationRef = useRef(null);
+  const alertIconRef = useRef(null);
 
   const authToken = localStorage.getItem("token");
 
@@ -121,17 +124,6 @@ function Home() {
     setFreshItem(false);
   };
 
-  const handleReadNotify = async (id) => {
-    console.log(id);
-    const readNotifi = await axiosClient.put(`/api/notification/${id}`);
-    if (readNotifi) {
-      console.log("Notification read");
-      fetchNotifications();
-    } else {
-      console.log("error in reading notification");
-    }
-  };
-
   const disableAlertTab = () => {
     setAllAlertTab(false);
     setUnreadTab(false);
@@ -163,6 +155,24 @@ function Home() {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    // Function to check if click is outside of the notification div
+    const handleClickOutside = (event) => {
+      if (notificationRef.current && !notificationRef.current.contains(event.target) && (!alertIconRef.current || !alertIconRef.current.contains(event.target))) {
+        setShowAlert(false); // Call the function to close the notification
+        console.log("clicked");
+        
+      }
+    };
+
+    // Add event listener for clicks outside of the notification
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   if (loading) {
     //Todo: make a loading page (skeleton type)
     return <div>loading...</div>;
@@ -173,8 +183,8 @@ function Home() {
         <div className="w-full flex justify-between px-8 py-3 items-center">
           <div>ADD Item</div>
           <div className="flex gap-4 items-center">
-          <Logout />
-            <div className="relative">
+            <Logout />
+            <div className="relative" ref={alertIconRef}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -197,14 +207,18 @@ function Home() {
                 ></div>
               ) : null}
               {showAlert && (
-                <div className="absolute w-80 h-80 top-8 right-0 border-2 p-3 border-black rounded-lg z-10 overflow-y-auto">
-                  <div className="flex gap-4">
+                <div ref={notificationRef} className="absolute w-80 h-80 top-8 right-0 border-2 p-3 border-black bg-white rounded-lg z-10">
+                  <div className="flex gap-4 w-full">
                     <button
                       onClick={() => {
                         disableAlertTab();
                         setUnreadTab(true);
                       }}
-                      className="bg-gray-200 py-1.5 px-4 rounded-lg"
+                      className={
+                        unreadTab
+                          ? "bg-green-500 text-white font-semibold text-md py-1.5 px-4 rounded-lg w-1/2"
+                          : "bg-gray-200 text-gray-800 text-bold py-1.5 px-4 rounded-lg w-1/2"
+                      }
                     >
                       Unread
                     </button>
@@ -213,32 +227,39 @@ function Home() {
                         disableAlertTab();
                         setAllAlertTab(true);
                       }}
-                      className="bg-gray-200 py-1.5 px-4 rounded-lg"
+                      className={
+                        allAlertTab
+                          ? "bg-green-500 text-white font-semibold text-md py-1.5 px-4 rounded-lg w-1/2"
+                          : "bg-gray-200 text-gray-800 text-bold py-1.5 px-4 rounded-lg w-1/2"
+                      }
                     >
                       All
                     </button>
                   </div>
-                  {unreadTab &&
-                    (notifications.filter((notify) => !notify.isRead).length ===
-                    0 ? (
-                      <p>No new notifications</p> // Show this message if no unread notifications exist
-                    ) : (
-                      <UnreadNotification
-                        notifies={notifications.filter(
-                          (notify) => !notify.isRead
-                        )}
-                        fetchNotifications={fetchNotifications}
-                      />
-                    ))}
-                  {allAlertTab &&
-                    (notifications.length === 0 ? (
-                      <p>Empty notifications</p> // Show this message if no notifications exist
-                    ) : (
-                      <AllNotifications
-                        notifies={notifications}
-                        fetchNotifications={fetchNotifications}
-                      />
-                    ))}
+
+                  <div className="overflow-y-auto h-[calc(100%-3rem)] mt-3 hide-scroll">
+                    {unreadTab &&
+                      (notifications.filter((notify) => !notify.isRead)
+                        .length === 0 ? (
+                        <p>No new notifications</p>
+                      ) : (
+                        <UnreadNotification
+                          notifies={notifications.filter(
+                            (notify) => !notify.isRead
+                          )}
+                          fetchNotifications={fetchNotifications}
+                        />
+                      ))}
+                    {allAlertTab &&
+                      (notifications.length === 0 ? (
+                        <p>Empty notifications</p>
+                      ) : (
+                        <AllNotifications
+                          notifies={notifications}
+                          fetchNotifications={fetchNotifications}
+                        />
+                      ))}
+                  </div>
                 </div>
               )}
             </div>
