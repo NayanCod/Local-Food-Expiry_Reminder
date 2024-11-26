@@ -9,6 +9,8 @@ import axiosClient from "../../axiosConfig.js";
 import AllItems from "./AllItems.jsx";
 import FreshItems from "./FreshItems.jsx";
 import ExpiredItems from "./ExpiredItems.jsx";
+import UnreadNotification from "./UnreadNotification.jsx";
+import AllNotifications from "./AllNotifications.jsx";
 
 function Home() {
   const [items, setItems] = useState();
@@ -198,99 +200,14 @@ function Home() {
                 0 ? (
                   <p>No new notifications</p> // Show this message if no unread notifications exist
                 ) : (
-                  notifications
-                    .filter((notify) => !notify.isRead)
-                    .map((notify) => {
-                      {
-                        /* const isHovered = hoveredNotification === notify._id; */
-                      }
-                      return (
-                        <div
-                          key={notify.timestamp}
-                          className="relative p-2 my-2 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 duration-200"
-                          onMouseEnter={() => setHoveredNotification(true)} // Set hover state on mouse enter
-                          onMouseLeave={() => setHoveredNotification(false)} // Reset hover state on mouse leave
-                        >
-                          <h2>
-                            {notify.message.split(" ")[2]}{" "}
-                            {notify.message.split(" ")[3] === "is"
-                              ? ""
-                              : notify.message.split(" ")[3]}
-                          </h2>
-                          <p>{notify.message}</p>
-
-                          {/* Show handleClick notification when the notification is unread or hovered */}
-                          {!notify.isRead && hoveredNotification && (
-                            <div
-                              className="absolute top-3 right-3 transition-all duration-200"
-                              onClick={() => handleReadNotify(notify._id)}
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="1.5"
-                                stroke="currentColor"
-                                className="w-4 h-4"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M6 18 18 6M6 6l12 12"
-                                />
-                              </svg>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })
+                  <UnreadNotification notifies={notifications.filter((notify) => !notify.isRead)} fetchNotifications={fetchNotifications}/>
                 ))}
                 {allAlertTab && (notifications.length ===
                 0 ? (
-                  <p>Empty notifications</p> // Show this message if no unread notifications exist
+                  <p>Empty notifications</p> // Show this message if no notifications exist
                 ) : (
-                  notifications
-                    .map((notify) => {
-                      return (
-                        <div
-                          key={notify.timestamp}
-                          className="relative p-2 my-2 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 duration-200"
-                          onMouseEnter={() => setHoveredNotification(true)} // Set hover state on mouse enter
-                          onMouseLeave={() => setHoveredNotification(false)} // Reset hover state on mouse leave
-                        >
-                          <h2>
-                            {notify.message.split(" ")[2]}{" "}
-                            {notify.message.split(" ")[3] === "is"
-                              ? ""
-                              : notify.message.split(" ")[3]}
-                          </h2>
-                          <p>{notify.message}</p>
-
-                          {/* Show handleClick notification when the notification is unread or hovered */}
-                          {!notify.isRead && hoveredNotification && (
-                            <div
-                              className="absolute top-3 right-3 transition-all duration-200"
-                              onClick={() => handleReadNotify(notify._id)}
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="1.5"
-                                stroke="currentColor"
-                                className="w-4 h-4"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M6 18 18 6M6 6l12 12"
-                                />
-                              </svg>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })
+                  <AllNotifications notifies={notifications} fetchNotifications={fetchNotifications}/>
+                  
                 ))}
               </div>
             )}
