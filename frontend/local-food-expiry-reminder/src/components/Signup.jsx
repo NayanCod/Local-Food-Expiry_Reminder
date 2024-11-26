@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from "react-toastify";
 
 function Signup() {
   const [name, setName] = useState("");
@@ -27,13 +28,16 @@ function Signup() {
       if(response.data?.user){
         Navigate("/login");
         alert("user successfully registered!");
+        toast.success("Successfully registered!");
       }
     } catch (error) {
       setError(error.response?.data?.error || "Register failed!");
+      toast.error("Registeration failed!");
     }
   };
   return (
     <div className=" bg-gray-700 min-h-screen flex justify-center items-center">
+    <ToastContainer/>
       <div className="md:w-2/5 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-900 dark:border-neutral-700">
         <div className="p-4 sm:p-7">
           <div className="text-center">

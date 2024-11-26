@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
 function Login({setIsAuthenticated}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,17 +19,19 @@ function Login({setIsAuthenticated}) {
       if(response.data?.token){
         localStorage.setItem('token', response.data?.token);
         setIsAuthenticated(true);
+        toast.success("Successfully logged in!");
         Navigate("/home");
-        alert("Logged In Successfully")
         console.log('Logged In Successfully');
       }
     } catch (error) {
       setError(error.response?.data?.error || 'Login failed');
+      toast.error("Login failed");
     }
   }
 
   return (
     <div className=" bg-gray-700 min-h-screen flex justify-center items-center">
+    <ToastContainer/>
       <div className="md:w-2/5 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-900 dark:border-neutral-700">
         <div className="p-4 sm:p-7">
           <div className="text-center">
