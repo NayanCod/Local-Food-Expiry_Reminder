@@ -11,6 +11,7 @@ import FreshItems from "./FreshItems.jsx";
 import ExpiredItems from "./ExpiredItems.jsx";
 import UnreadNotification from "./UnreadNotification.jsx";
 import AllNotifications from "./AllNotifications.jsx";
+import Logout from "./Logout.jsx";
 
 function Home() {
   const [items, setItems] = useState();
@@ -20,7 +21,6 @@ function Home() {
   const [itemExpiryDate, setItemExpiryDate] = useState();
   const [addItemError, setAddItemError] = useState("");
   const [showAlert, setShowAlert] = useState(false);
-  const [hoveredNotification, setHoveredNotification] = useState(false);
   const [allItem, setAllItem] = useState(true);
   const [expiredItem, setExpiredItem] = useState(false);
   const [freshItem, setFreshItem] = useState(false);
@@ -119,7 +119,7 @@ function Home() {
     setAllItem(false);
     setExpiredItem(false);
     setFreshItem(false);
-  }
+  };
 
   const handleReadNotify = async (id) => {
     console.log(id);
@@ -135,7 +135,7 @@ function Home() {
   const disableAlertTab = () => {
     setAllAlertTab(false);
     setUnreadTab(false);
-  }
+  };
 
   useEffect(() => {
     requestNotificationPermission();
@@ -172,45 +172,76 @@ function Home() {
         <ToastContainer />
         <div className="w-full flex justify-between px-8 py-3 items-center">
           <div>ADD Item</div>
-          <div className="relative">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-6 h-6 cursor-pointer"
-              onClick={alertClick}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
-              />
-            </svg>
-            {notifications?.filter((n) => !n.isRead).length ? <div className="absolute top-0 right-1
-             w-2 h-2 bg-red-500 rounded-full"></div> : null}
-            {showAlert && (
-              <div className="absolute w-80 h-80 top-8 right-0 border-2 p-3 border-black rounded-lg z-10 overflow-y-auto">
-              <div className="flex gap-4">
-                <button onClick={() => {disableAlertTab(); setUnreadTab(true)}} className="bg-gray-200 py-1.5 px-4 rounded-lg">Unread</button>
-                <button onClick={() => {disableAlertTab(); setAllAlertTab(true)}} className="bg-gray-200 py-1.5 px-4 rounded-lg">All</button>
-              </div>
-                {unreadTab && (notifications.filter((notify) => !notify.isRead).length ===
-                0 ? (
-                  <p>No new notifications</p> // Show this message if no unread notifications exist
-                ) : (
-                  <UnreadNotification notifies={notifications.filter((notify) => !notify.isRead)} fetchNotifications={fetchNotifications}/>
-                ))}
-                {allAlertTab && (notifications.length ===
-                0 ? (
-                  <p>Empty notifications</p> // Show this message if no notifications exist
-                ) : (
-                  <AllNotifications notifies={notifications} fetchNotifications={fetchNotifications}/>
-                  
-                ))}
-              </div>
-            )}
+          <div className="flex gap-4 items-center">
+          <Logout />
+            <div className="relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-6 h-6 cursor-pointer"
+                onClick={alertClick}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
+                />
+              </svg>
+              {notifications?.filter((n) => !n.isRead).length ? (
+                <div
+                  className="absolute top-0 right-1
+             w-2 h-2 bg-red-500 rounded-full"
+                ></div>
+              ) : null}
+              {showAlert && (
+                <div className="absolute w-80 h-80 top-8 right-0 border-2 p-3 border-black rounded-lg z-10 overflow-y-auto">
+                  <div className="flex gap-4">
+                    <button
+                      onClick={() => {
+                        disableAlertTab();
+                        setUnreadTab(true);
+                      }}
+                      className="bg-gray-200 py-1.5 px-4 rounded-lg"
+                    >
+                      Unread
+                    </button>
+                    <button
+                      onClick={() => {
+                        disableAlertTab();
+                        setAllAlertTab(true);
+                      }}
+                      className="bg-gray-200 py-1.5 px-4 rounded-lg"
+                    >
+                      All
+                    </button>
+                  </div>
+                  {unreadTab &&
+                    (notifications.filter((notify) => !notify.isRead).length ===
+                    0 ? (
+                      <p>No new notifications</p> // Show this message if no unread notifications exist
+                    ) : (
+                      <UnreadNotification
+                        notifies={notifications.filter(
+                          (notify) => !notify.isRead
+                        )}
+                        fetchNotifications={fetchNotifications}
+                      />
+                    ))}
+                  {allAlertTab &&
+                    (notifications.length === 0 ? (
+                      <p>Empty notifications</p> // Show this message if no notifications exist
+                    ) : (
+                      <AllNotifications
+                        notifies={notifications}
+                        fetchNotifications={fetchNotifications}
+                      />
+                    ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <form onSubmit={handleAddItem} className="border-2 p-4">
@@ -238,20 +269,37 @@ function Home() {
         <br></br>
         <h1>Your Items</h1>
         <div className="flex gap-4">
-          <button onClick={() => {disableAllFilter(); setAllItem(true)}} className="bg-gray-200 py-1.5 px-4 rounded-lg">All</button>
-          <button onClick={() => {disableAllFilter(); setFreshItem(true)}} className="bg-gray-200 py-1.5 px-4 rounded-lg">Fresh</button>
-          <button onClick={() => {disableAllFilter(); setExpiredItem(true)}} className="bg-gray-200 py-1.5 px-4 rounded-lg">Expired</button>
+          <button
+            onClick={() => {
+              disableAllFilter();
+              setAllItem(true);
+            }}
+            className="bg-gray-200 py-1.5 px-4 rounded-lg"
+          >
+            All
+          </button>
+          <button
+            onClick={() => {
+              disableAllFilter();
+              setFreshItem(true);
+            }}
+            className="bg-gray-200 py-1.5 px-4 rounded-lg"
+          >
+            Fresh
+          </button>
+          <button
+            onClick={() => {
+              disableAllFilter();
+              setExpiredItem(true);
+            }}
+            className="bg-gray-200 py-1.5 px-4 rounded-lg"
+          >
+            Expired
+          </button>
         </div>
-        {
-          allItem ? <AllItems items={items}/> : null
-        }
-        {
-          freshItem ? <FreshItems items={items} /> : null
-        }
-        {
-          expiredItem ? <ExpiredItems items={items}/> : null
-        }
-        
+        {allItem ? <AllItems items={items} /> : null}
+        {freshItem ? <FreshItems items={items} /> : null}
+        {expiredItem ? <ExpiredItems items={items} /> : null}
       </>
     );
   }
