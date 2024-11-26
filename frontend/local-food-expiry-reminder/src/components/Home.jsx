@@ -22,6 +22,8 @@ function Home() {
   const [allItem, setAllItem] = useState(true);
   const [expiredItem, setExpiredItem] = useState(false);
   const [freshItem, setFreshItem] = useState(false);
+  const [unreadTab, setUnreadTab] = useState(true);
+  const [allAlertTab, setAllAlertTab] = useState(false);
 
   const authToken = localStorage.getItem("token");
 
@@ -128,6 +130,11 @@ function Home() {
     }
   };
 
+  const disableAlertTab = () => {
+    setAllAlertTab(false);
+    setUnreadTab(false);
+  }
+
   useEffect(() => {
     requestNotificationPermission();
     fetchItems();
@@ -182,8 +189,12 @@ function Home() {
             {notifications?.filter((n) => !n.isRead).length ? <div className="absolute top-0 right-1
              w-2 h-2 bg-red-500 rounded-full"></div> : null}
             {showAlert && (
-              <div className="absolute w-80 top-8 right-0 border-2 p-3 border-black rounded-lg z-10">
-                {notifications.filter((notify) => !notify.isRead).length ===
+              <div className="absolute w-80 h-80 top-8 right-0 border-2 p-3 border-black rounded-lg z-10 overflow-y-auto">
+              <div className="flex gap-4">
+                <button onClick={() => {disableAlertTab(); setUnreadTab(true)}} className="bg-gray-200 py-1.5 px-4 rounded-lg">Unread</button>
+                <button onClick={() => {disableAlertTab(); setAllAlertTab(true)}} className="bg-gray-200 py-1.5 px-4 rounded-lg">All</button>
+              </div>
+                {unreadTab && (notifications.filter((notify) => !notify.isRead).length ===
                 0 ? (
                   <p>No new notifications</p> // Show this message if no unread notifications exist
                 ) : (
@@ -233,7 +244,54 @@ function Home() {
                         </div>
                       );
                     })
-                )}
+                ))}
+                {allAlertTab && (notifications.length ===
+                0 ? (
+                  <p>Empty notifications</p> // Show this message if no unread notifications exist
+                ) : (
+                  notifications
+                    .map((notify) => {
+                      return (
+                        <div
+                          key={notify.timestamp}
+                          className="relative p-2 my-2 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 duration-200"
+                          onMouseEnter={() => setHoveredNotification(true)} // Set hover state on mouse enter
+                          onMouseLeave={() => setHoveredNotification(false)} // Reset hover state on mouse leave
+                        >
+                          <h2>
+                            {notify.message.split(" ")[2]}{" "}
+                            {notify.message.split(" ")[3] === "is"
+                              ? ""
+                              : notify.message.split(" ")[3]}
+                          </h2>
+                          <p>{notify.message}</p>
+
+                          {/* Show handleClick notification when the notification is unread or hovered */}
+                          {!notify.isRead && hoveredNotification && (
+                            <div
+                              className="absolute top-3 right-3 transition-all duration-200"
+                              onClick={() => handleReadNotify(notify._id)}
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="w-4 h-4"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M6 18 18 6M6 6l12 12"
+                                />
+                              </svg>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })
+                ))}
               </div>
             )}
           </div>
