@@ -16,10 +16,10 @@ exports.addNotification = async (req, res) => {
     });
     await notifcation.save();
     console.log("Notifcation saved successfully");
-    return res.status(201).send("notification saved successfully");
+    return res.status(201).json({messaage: "notification saved successfully"});
   } catch (error) {
     console.log("Error in saving notifcation", error);
-    res.status(500).send({ error: "Failed to save notification" });
+    res.status(500).json({ error: "Failed to save notification" });
   }
 };
 
