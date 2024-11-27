@@ -33,7 +33,7 @@ const AddItemForm = ({setItems, setLoading, closeModal}) => {
   return (
     <form
       onSubmit={handleAddItem}
-      className="shadow-lg rounded-lg p-6 bg-white max-w-md mx-auto space-y-4"
+      className="rounded-lg p-6 bg-white max-w-md mx-auto space-y-4"
     >
       {/* Item Name Input */}
       <div>
