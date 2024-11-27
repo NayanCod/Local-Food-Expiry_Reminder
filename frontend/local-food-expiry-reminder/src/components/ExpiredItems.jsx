@@ -2,7 +2,7 @@ import ItemCard from "./ItemCard";
 
 const ExpiredItems = ({ items }) => {
   return (
-    <div>
+    <div className="mx-6 my-6 flex flex-wrap gap-6 justify-start">
       {items.filter((item) => item.notified).map((item, idx) => {
         return <ItemCard key={idx} item={item} />;
       })}

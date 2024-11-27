@@ -1,21 +1,18 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import UnreadNotification from "./UnreadNotification";
 import AllNotifications from "./AllNotifications";
 
-const Notifications = ({notifications, fetchNotifications}) => {
-    const [unreadTab, setUnreadTab] = useState(true);
-    const [allAlertTab, setAllAlertTab] = useState(false);
+const Notifications = ({ notifications, fetchNotifications }) => {
+  const [unreadTab, setUnreadTab] = useState(true);
+  const [allAlertTab, setAllAlertTab] = useState(false);
 
-    const disableAlertTab = () => {
-        setAllAlertTab(false);
-        setUnreadTab(false);
-      };
-    
+  const disableAlertTab = () => {
+    setAllAlertTab(false);
+    setUnreadTab(false);
+  };
 
   return (
-    <div
-      className="absolute w-80 h-80 top-8 right-0 border-2 p-3 border-black bg-white rounded-lg z-10"
-    >
+    <div className="absolute w-80 h-80 top-8 right-0 border-2 p-3 border-black bg-white rounded-lg z-10">
       <div className="flex gap-4 w-full">
         <button
           onClick={() => {

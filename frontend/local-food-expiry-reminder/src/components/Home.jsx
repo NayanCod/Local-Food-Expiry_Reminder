@@ -9,29 +9,38 @@ import axiosClient from "../../axiosConfig.js";
 import AllItems from "./AllItems.jsx";
 import FreshItems from "./FreshItems.jsx";
 import ExpiredItems from "./ExpiredItems.jsx";
-import UnreadNotification from "./UnreadNotification.jsx";
-import AllNotifications from "./AllNotifications.jsx";
-import Logout from "./Logout.jsx";
 import Notifications from "./Notifications.jsx";
+import FixedModal from "./FixedModal.jsx";
+import AddItemForm from "./AddItemForm.jsx";
+import WarningDialog from "./WarningDialog.jsx";
+import Tabs from "./Tabs.jsx";
 
 function Home() {
   const [items, setItems] = useState();
   const [notifications, setNotifications] = useState();
   const [loading, setLoading] = useState(true);
-  const [itemName, setItemName] = useState("");
-  const [itemExpiryDate, setItemExpiryDate] = useState();
-  const [addItemError, setAddItemError] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   const [allItem, setAllItem] = useState(true);
   const [expiredItem, setExpiredItem] = useState(false);
   const [freshItem, setFreshItem] = useState(false);
-  const [unreadTab, setUnreadTab] = useState(true);
-  const [allAlertTab, setAllAlertTab] = useState(false);
+  const [activeTab, setActiveTab] = useState("All");
 
   const notificationRef = useRef(null);
   const alertIconRef = useRef(null);
 
   const authToken = localStorage.getItem("token");
+
+  const handleTabChange = (tabName) => {
+    disableAllFilter();
+    setActiveTab(tabName);
+    if (tabName === "All") {
+      console.log("All items shown");
+    } else if (tabName === "Fresh") {
+      console.log("Fresh items shown");
+    } else if (tabName === "Expired") {
+      console.log("Expired items shown");
+    }
+  };
 
   const requestNotificationPermission = async () => {
     const permission = await Notification.requestPermission();
@@ -92,29 +101,6 @@ function Home() {
     }
   };
 
-  const handleAddItem = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axiosClient.post("/api/items/addItem", {
-        name: itemName,
-        expiryDate: itemExpiryDate,
-      });
-      console.log("Item added", res.data?.data);
-
-      setItems((prevItems) => [...prevItems, res.data?.data]);
-
-      // Reset form inputs
-      setItemName("");
-      setItemExpiryDate("");
-      setAddItemError("");
-    } catch (error) {
-      console.log("Error adding items", error);
-      setAddItemError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const alertClick = () => {
     setShowAlert(!showAlert);
   };
@@ -125,9 +111,9 @@ function Home() {
     setFreshItem(false);
   };
 
-  const disableAlertTab = () => {
-    setAllAlertTab(false);
-    setUnreadTab(false);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -157,120 +143,83 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    // Function to check if click is outside of the notification div
     const handleClickOutside = (event) => {
-      if (notificationRef.current && !notificationRef.current.contains(event.target) && (!alertIconRef.current || !alertIconRef.current.contains(event.target))) {
-        setShowAlert(false); // Call the function to close the notification
-        console.log("clicked");
-        
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target) &&
+        (!alertIconRef.current || !alertIconRef.current.contains(event.target))
+      ) {
+        setShowAlert(false);
       }
     };
-
-    // Add event listener for clicks outside of the notification
     document.addEventListener("mousedown", handleClickOutside);
-
-    // Cleanup the event listener on component unmount
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   if (loading) {
     //Todo: make a loading page (skeleton type)
     return <div>loading...</div>;
   } else {
     return (
+      //Todo: Make a dark mode theme
       <>
-        <ToastContainer />
-        <div className="w-full flex justify-between px-8 py-3 items-center">
-          <div>ADD Item</div>
-          <div className="flex gap-4 items-center">
-            <Logout />
-            <div className="relative" ref={alertIconRef}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-6 h-6 cursor-pointer"
-                onClick={alertClick}
+        <div className="">
+          <ToastContainer />
+          <div className="w-full flex justify-between px-8 py-3 items-center">
+            <div>FreshTrack</div>
+            <div className="flex gap-4 items-center">
+              <FixedModal heading="Add Item" button="Add Item">
+                <AddItemForm setItems={setItems} setLoading={setLoading} />
+              </FixedModal>
+              <WarningDialog
+                heading="Are you sure, You want to logout ?"
+                accept={handleLogout}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
-                />
-              </svg>
-              {notifications?.filter((n) => !n.isRead).length ? (
-                <div
-                  className="absolute top-0 right-1
+                Logout
+              </WarningDialog>
+              <div className="relative" ref={alertIconRef}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6 cursor-pointer"
+                  onClick={alertClick}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
+                  />
+                </svg>
+                {notifications?.filter((n) => !n.isRead).length ? (
+                  <div
+                    className="absolute top-0 right-1
              w-2 h-2 bg-red-500 rounded-full"
-                ></div>
-              ) : null}
-              {showAlert && (
-                <div ref={notificationRef}>
-               <Notifications notifications={notifications} fetchNotifications={fetchNotifications}/>
-               </div>
-              )}
+                  ></div>
+                ) : null}
+                {showAlert && (
+                  <div ref={notificationRef}>
+                    <Notifications
+                      notifications={notifications}
+                      fetchNotifications={fetchNotifications}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
+          <h1>Your Items</h1>
+          <Tabs activeTab={activeTab} setActiveTab={handleTabChange} />
+          <div className="mt-4">
+            {activeTab === "All" && <AllItems items={items} />}
+            {activeTab === "Fresh" && <FreshItems items={items} />}
+            {activeTab === "Expired" && <ExpiredItems items={items} />}
+          </div>
         </div>
-        <form onSubmit={handleAddItem} className="border-2 p-4">
-          <input
-            type="text"
-            placeholder="item name"
-            value={itemName}
-            onChange={(e) => setItemName(e.target.value)}
-          />
-          <br></br>
-          <input
-            type="date"
-            placeholder="expiry date of the item"
-            value={itemExpiryDate}
-            onChange={(e) => setItemExpiryDate(e.target.value)}
-          />
-          <br></br>
-          <p className="text-red-500 text-sm font-semibold">{addItemError}</p>
-          <button className="border-2 border-black p-1 bg-gray-100">
-            Add Item
-          </button>
-        </form>
-        <br></br>
-        <hr></hr>
-        <br></br>
-        <h1>Your Items</h1>
-        <div className="flex gap-4">
-          <button
-            onClick={() => {
-              disableAllFilter();
-              setAllItem(true);
-            }}
-            className="bg-gray-200 py-1.5 px-4 rounded-lg"
-          >
-            All
-          </button>
-          <button
-            onClick={() => {
-              disableAllFilter();
-              setFreshItem(true);
-            }}
-            className="bg-gray-200 py-1.5 px-4 rounded-lg"
-          >
-            Fresh
-          </button>
-          <button
-            onClick={() => {
-              disableAllFilter();
-              setExpiredItem(true);
-            }}
-            className="bg-gray-200 py-1.5 px-4 rounded-lg"
-          >
-            Expired
-          </button>
-        </div>
-        {allItem ? <AllItems items={items} /> : null}
-        {freshItem ? <FreshItems items={items} /> : null}
-        {expiredItem ? <ExpiredItems items={items} /> : null}
       </>
     );
   }
