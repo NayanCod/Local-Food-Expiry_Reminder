@@ -165,9 +165,9 @@ function Home() {
     return (
       //Todo: Make a dark mode theme
       <>
-        <div className="">
+        <div className="h-screen flex flex-col overflow-y-auto hide-scroll">
           <ToastContainer />
-          <div className="w-full flex justify-between px-8 py-3 items-center">
+          <div className="fixed top-0 bg-white shadow-md shadow-gray-200 w-full flex justify-between px-8 py-3 items-center">
             <div>FreshTrack</div>
             <div className="flex gap-4 items-center">
               <FixedModal heading="Add Item" button="Add Item">
@@ -212,12 +212,14 @@ function Home() {
               </div>
             </div>
           </div>
-          <h1>Your Items</h1>
+          <div className="flex-grow">
+          <h1 className="ml-6 mt-20 text-3xl text-gray-800 font-semibold font-sans my-6">Your Items</h1>
           <Tabs activeTab={activeTab} setActiveTab={handleTabChange} />
-          <div className="mt-4">
+          <div className="my-4 overflow-y-auto h-[calc(100vh-200px)] scrollable-container">
             {activeTab === "All" && <AllItems items={items} />}
             {activeTab === "Fresh" && <FreshItems items={items} />}
             {activeTab === "Expired" && <ExpiredItems items={items} />}
+          </div>
           </div>
         </div>
       </>

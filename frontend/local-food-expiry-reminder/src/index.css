@@ -10,3 +10,38 @@
 .hide-scroll::-webkit-scrollbar {
   display: none; /* For Chrome, Safari, and Opera */
 }
+
+
+/* Custom scrollbar */
+.scrollable-container {
+  /* This allows the section to scroll */
+  overflow-y: scroll;
+}
+
+/* Customize the scrollbar track */
+.scrollable-container::-webkit-scrollbar {
+  width: 12px;  /* Set the width of the scrollbar */
+}
+
+.scrollable-container::-webkit-scrollbar-track {
+  background: #f0f0f0;  /* Light grey track */
+  border-radius: 50%;   /* Rounded track */
+}
+
+/* Customize the scrollbar thumb (the draggable part) */
+.scrollable-container::-webkit-scrollbar-thumb {
+  background-color: #4CAF50;  /* Green color for the thumb */
+  border-radius: 50%;        /* Rounded thumb */
+  border: 3px solid #f0f0f0;  /* Border around the thumb to create separation */
+}
+
+/* Hover effect for the scrollbar thumb */
+.scrollable-container::-webkit-scrollbar-thumb:hover {
+  background-color: #45a049;  /* Darker green when hovered */
+}
+
+/* For Firefox */
+.scrollable-container {
+  scrollbar-width: thin;  /* Thin scrollbar */
+  scrollbar-color: #4CAF50 #f0f0f0;  /* Thumb color and track color */
+}
