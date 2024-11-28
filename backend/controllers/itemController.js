@@ -26,3 +26,27 @@ exports.getItems = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+exports.deleteItem = async (req, res) => {
+  try {
+    const user = req.user.id; 
+    const { id } = req.params; 
+
+    if (!user) {
+      return res.status(401).send("Unauthorized: User not found!");
+    }
+
+    const deletedItem = await Item.findOneAndDelete({ user: user, _id: id });
+
+    if (!deletedItem) {
+      return res.status(404).send("Item not found or unauthorized to delete.");
+    }
+
+    console.log("Deleted item: ", deletedItem);
+
+    res.status(200).json({ message: "Item successfully deleted.", data: deletedItem });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+

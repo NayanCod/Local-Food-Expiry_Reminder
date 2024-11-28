@@ -12,7 +12,7 @@ const Notifications = ({ notifications, fetchNotifications }) => {
   };
 
   return (
-    <div className="absolute w-80 h-80 top-12 right-0 p-3 border-1 border-gray-300 shadow-md bg-gray-50 rounded-lg z-10">
+    <div className="absolute w-80 h-80 top-12 right-0 p-3 border-1 border-gray-300 shadow-md bg-gray-50 rounded-lg z-20">
       <div className="flex gap-4 w-full">
         <button
           onClick={() => {

@@ -209,9 +209,9 @@ function Home() {
           <h1 className="ml-6 mt-20 text-3xl text-gray-800 font-semibold font-sans my-6">Your Items</h1>
           <Tabs activeTab={activeTab} setActiveTab={handleTabChange} />
           <div className="my-4 overflow-y-auto h-[calc(100vh-200px)] scrollable-container">
-            {activeTab === "All" && <AllItems items={items} />}
-            {activeTab === "Fresh" && <FreshItems items={items} />}
-            {activeTab === "Expired" && <ExpiredItems items={items} />}
+            {activeTab === "All" && <AllItems items={items} fetchItems={fetchItems}/>}
+            {activeTab === "Fresh" && <FreshItems items={items} fetchItems={fetchItems} />}
+            {activeTab === "Expired" && <ExpiredItems items={items} fetchItems={fetchItems} />}
           </div>
           </div>
         </div>
