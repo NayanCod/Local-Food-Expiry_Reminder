@@ -33,13 +33,6 @@ function Home() {
   const handleTabChange = (tabName) => {
     disableAllFilter();
     setActiveTab(tabName);
-    if (tabName === "All") {
-      console.log("All items shown");
-    } else if (tabName === "Fresh") {
-      console.log("Fresh items shown");
-    } else if (tabName === "Expired") {
-      console.log("Expired items shown");
-    }
   };
 
   const requestNotificationPermission = async () => {

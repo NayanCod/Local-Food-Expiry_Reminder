@@ -15,6 +15,6 @@ const ItemSchema = new mongoose.Schema({
     ref: "User",
   },
   notified: { type: Boolean, default: false },
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model("Item", ItemSchema);

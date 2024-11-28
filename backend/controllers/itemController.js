@@ -19,7 +19,7 @@ exports.getItems = async (req, res) => {
     if (!user) {
       return res.status(500).send("User not found!");
     }
-    const items = await Item.find({ user: user });
+    const items = await Item.find({ user: user }).sort({ createdAt: -1 });
     console.log("user's items: ", items);
     res.status(200).json({ data: items });
   } catch (error) {

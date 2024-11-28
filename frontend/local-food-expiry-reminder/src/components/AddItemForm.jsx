@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axiosClient from "../../axiosConfig";
+import { toast } from "react-toastify";
 
 const AddItemForm = ({setItems, setLoading, closeModal}) => {
     const [itemName, setItemName] = useState("");
@@ -14,6 +15,7 @@ const AddItemForm = ({setItems, setLoading, closeModal}) => {
             name: itemName,
             expiryDate: itemExpiryDate,
           });
+          toast.success("Item added successfully!");
           console.log("Item added", res.data?.data);
     
           setItems((prevItems) => [...prevItems, res.data?.data]);
@@ -25,6 +27,7 @@ const AddItemForm = ({setItems, setLoading, closeModal}) => {
           closeModal();
         } catch (error) {
           console.log("Error adding items", error);
+          toast.error("Error in adding items");
           setAddItemError(error);
         } finally {
           setLoading(false);

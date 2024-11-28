@@ -18,6 +18,7 @@ function Login({setIsAuthenticated}) {
       });
       if(response.data?.token){
         localStorage.setItem('token', response.data?.token);
+        window.dispatchEvent(new Event('tokenUpdated'));
         setIsAuthenticated(true);
         toast.success("Successfully logged in!");
         Navigate("/home");
