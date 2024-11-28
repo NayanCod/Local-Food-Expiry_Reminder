@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -63,59 +64,20 @@ function Header() {
             aria-labelledby="hs-navbar-example-collapse"
           >
             <div className="flex flex-col gap-5 mt-5 sm:flex-row sm:items-center sm:justify-end sm:mt-0 sm:ps-5">
-              <a
+              <Link to="/home"
                 className="font-medium text-blue-500 focus:outline-none"
                 href="#"
                 aria-current="page"
               >
                 Home
-              </a>
-              <a
-                className="font-medium text-gray-600 hover:text-gray-400 focus:outline-none focus:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
-                href="#"
-              >
-                Add/Delete Item
-              </a>
-              <a
+              </Link>
+              <Link to="/home"
                 className="font-medium text-gray-600 hover:text-gray-400 focus:outline-none focus:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
                 href="#"
               >
                 My List
-              </a>
-              <a
-                className="relative font-medium text-gray-600 hover:text-gray-400 focus:outline-none focus:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
-                href="#"
-              >
-                Alerts
-              </a>
-
-              {/* Account */}
-              <div className="inline-flex ">
-                <button
-                  id="hs-dropdown-custom-trigger"
-                  type="button"
-                  onClick={toggleDropdown}
-                  className={`p-2 relative md:static border border-gray-500 rounded-full ${
-                    isOpen ? "aria-expanded" : ""
-                  }`}
-                  aria-haspopup="menu"
-                  aria-expanded={isOpen}
-                  aria-label="Dropdown"
-                >
-                  <img
-                    className="w-4 h-auto rounded-full"
-                    src="/user-solid.svg"
-                    alt="Avatar"
-                  />
-                  
-                </button>
-
-                {isOpen && (
-                  <div className="absolute left-14 md:left-auto sm:top-14 sm:right-0 sm:left-auto md:right-0 md:top-14 w-auto bg-black rounded-md">
-                    <button className="text-red-500 hover:bg-gray-600 px-4 py-2 rounded-md">Logout</button>
-                  </div>
-                )}
-              </div>
+              </Link>
+              
             </div>
           </div>
         </nav>
