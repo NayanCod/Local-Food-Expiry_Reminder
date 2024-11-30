@@ -23,7 +23,7 @@ const FixedModal = ({ heading, button, children }) => {
       {/* Button to open the modal */}
       <button
         onClick={openModal}
-        className="px-4 py-2 bg-blue-500 text-white font-medium rounded hover:bg-blue-600"
+        className="px-4 py-1.5 bg-gray-200 text-gray-800 font-medium rounded hover:bg-gray-300"
       >
         {button}
       </button>

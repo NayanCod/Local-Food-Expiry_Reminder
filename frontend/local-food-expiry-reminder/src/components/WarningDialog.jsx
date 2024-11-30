@@ -28,7 +28,7 @@ const WarningDialog = ({ heading, accept, button, children }) => {
       {/* Button to Open Dialog */}
       <button
         onClick={openDialog}
-        className="px-4 py-2 bg-red-500 text-white font-medium rounded hover:bg-red-600"
+        className="px-4 py-1.5 bg-red-500 text-white font-medium rounded hover:bg-red-600"
       >
         {children}
       </button>
@@ -40,7 +40,7 @@ const WarningDialog = ({ heading, accept, button, children }) => {
           onClick={closeDialog}
         >
           <div
-            className="relative bg-white rounded-lg shadow-lg w-11/12 sm:w-1/2 max-w-md p-6 relative"
+            className="relative bg-white rounded-lg shadow-lg w-11/12 sm:w-1/2 max-w-md p-6"
             onClick={(e) => e.stopPropagation()}
           >
           <button

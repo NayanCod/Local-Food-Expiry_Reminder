@@ -1,10 +1,9 @@
-import React from "react";
 
 const Tabs = ({ activeTab, setActiveTab }) => {
   const getTabClass = (tabName) =>
-    `py-1.5 px-4 rounded-lg cursor-pointer ${
+    `py-1 px-4 rounded-lg font-semibold cursor-pointer ${
       activeTab === tabName
-        ? "bg-blue-500 text-white"
+        ? "bg-gray-800 text-white"
         : "bg-gray-200 text-gray-600 hover:bg-gray-300"
     }`;
 

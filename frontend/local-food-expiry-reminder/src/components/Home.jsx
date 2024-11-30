@@ -24,9 +24,12 @@ function Home() {
   const [expiredItem, setExpiredItem] = useState(false);
   const [freshItem, setFreshItem] = useState(false);
   const [activeTab, setActiveTab] = useState("All");
+  const [showMenu, setShowMenu] = useState(false);
 
   const notificationRef = useRef(null);
   const alertIconRef = useRef(null);
+  const accountIconRef = useRef(null);
+  const accountRef = useRef(null);
 
   const authToken = localStorage.getItem("token");
 
@@ -144,6 +147,14 @@ function Home() {
       ) {
         setShowAlert(false);
       }
+      if (
+        accountRef.current &&
+        !accountRef.current.contains(event.target) &&
+        (!accountIconRef.current ||
+          !accountIconRef.current.contains(event.target))
+      ) {
+        setShowMenu(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -161,17 +172,51 @@ function Home() {
         <div className="h-screen flex flex-col overflow-y-auto hide-scroll">
           <ToastContainer />
           <div className="fixed top-0 bg-white shadow-md shadow-gray-200 w-full flex justify-between px-8 py-3 items-center">
-            <div>FreshTrack</div>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-100">
+                <span className="relative text-green-400 drop-shadow-[0_0_10px_rgba(34,197,94,0.7)]">
+                  Fresh
+                  <span className="absolute -bottom-1 left-0 w-full h-1 bg-green-500 rounded-full"></span>
+                </span>
+                <span className="text-blue-500 drop-shadow-[0_0_10px_rgba(59,130,246,0.7)]">
+                  Track
+                </span>
+              </h1>
+            </div>
             <div className="flex gap-4 items-center">
-              <FixedModal heading="Add Item" button="Add Item">
-                <AddItemForm setItems={setItems} setLoading={setLoading} />
-              </FixedModal>
-              <WarningDialog
-                heading="Are you sure, You want to logout ?"
-                accept={handleLogout}
-              >
-                Logout
-              </WarningDialog>
+              <div ref={accountIconRef} onClick={() => setShowMenu(!showMenu)}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6 cursor-pointer"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                  />
+                </svg>
+              </div>
+              {showMenu && (
+                <div
+                  ref={accountRef}
+                  className="absolute w-30 top-14 right-12 p-3 border-1 border-gray-300 flex flex-col gap-3 shadow-md bg-gray-50 rounded-lg z-20"
+                >
+                  <FixedModal heading="Add Item" button="Add Item">
+                    <AddItemForm setItems={setItems} setLoading={setLoading} />
+                  </FixedModal>
+                  <WarningDialog
+                    heading="Are you sure, You want to logout ?"
+                    accept={handleLogout}
+                  >
+                    Logout
+                  </WarningDialog>
+                </div>
+              )}
+
               <div className="relative" ref={alertIconRef}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -203,17 +248,24 @@ function Home() {
                   </div>
                 )}
               </div>
-              
             </div>
           </div>
           <div className="flex-grow">
-          <h1 className="ml-6 mt-20 text-3xl text-gray-800 font-semibold font-sans my-6">Your Items</h1>
-          <Tabs activeTab={activeTab} setActiveTab={handleTabChange} />
-          <div className="my-4 overflow-y-auto h-[calc(100vh-200px)] scrollable-container">
-            {activeTab === "All" && <AllItems items={items} fetchItems={fetchItems}/>}
-            {activeTab === "Fresh" && <FreshItems items={items} fetchItems={fetchItems} />}
-            {activeTab === "Expired" && <ExpiredItems items={items} fetchItems={fetchItems} />}
-          </div>
+            <h1 className="ml-6 mt-20 text-3xl text-gray-800 font-semibold font-sans my-6">
+              Your Items
+            </h1>
+            <Tabs activeTab={activeTab} setActiveTab={handleTabChange} />
+            <div className="my-4 overflow-y-auto h-[calc(100vh-200px)] scrollable-container">
+              {activeTab === "All" && (
+                <AllItems items={items} fetchItems={fetchItems} />
+              )}
+              {activeTab === "Fresh" && (
+                <FreshItems items={items} fetchItems={fetchItems} />
+              )}
+              {activeTab === "Expired" && (
+                <ExpiredItems items={items} fetchItems={fetchItems} />
+              )}
+            </div>
           </div>
         </div>
       </>
