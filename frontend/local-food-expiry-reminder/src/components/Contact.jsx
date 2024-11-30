@@ -11,7 +11,6 @@ function Contact() {
   const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
   const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
   const userID = import.meta.env.VITE_EMAILJS_USER_ID;
-  console.log(serviceId, templateId, userID);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -30,7 +29,6 @@ function Contact() {
       .send(serviceId, templateId, formData, userID)
       .then(
         (response) => {
-          console.log("SUCCESS:", response);
           toast.success("Your inquiry has been sent!");
           // Reset the form fields
           setFirstName("");
@@ -40,8 +38,7 @@ function Contact() {
           setDetails("");
         },
         (err) => {
-          console.log("FAILED:", err);
-          alert("Something went wrong. Please try again.");
+          toast.error("Something went wrong. Please try again.");
         }
       );
   };

@@ -48,7 +48,7 @@ function Home() {
             "BAFC6H1DCM7vMOyHHJNhvoK0OzlijdUg8Nbtal2PQ9na6KxbO1MP5cVMIp5cfsJz2uuSrjWLwgNlnmTNlXbZuRE",
         });
         if (token) {
-          console.log("TOKEN GENERATED", token);
+          // console.log("TOKEN GENERATED", token);
           const updateToken = await axiosClient.post("/api/auth/updateToken", {
             fcmToken: token,
           });
@@ -73,7 +73,7 @@ function Home() {
       setItems(res.data?.data);
       setLoading(false);
     } catch (error) {
-      console.log("Error fetching items: ", error);
+      // console.log("Error fetching items: ", error);
       setLoading(false);
     }
   };
@@ -85,7 +85,7 @@ function Home() {
       setNotifications(res.data?.data);
       setLoading(false);
     } catch (error) {
-      console.log("Error fetching notifications: ", error);
+      // console.log("Error fetching notifications: ", error);
       setLoading(false);
     }
   };
@@ -111,7 +111,7 @@ function Home() {
     fetchNotifications();
 
     const unsubscribe = onMessage(messaging, async (payload) => {
-      console.log("foregournd message recieved", payload);
+      // console.log("foregournd message recieved", payload);
 
       const { title, body } = payload.notification || {};
       toast.info(`📢 ${title}: ${body}`);
@@ -124,7 +124,7 @@ function Home() {
         });
         fetchNotifications();
       } catch (error) {
-        console.error("Failed to save notification:", error);
+        // console.error("Failed to save notification:", error);
       }
     });
 

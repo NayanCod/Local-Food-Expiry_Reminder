@@ -22,7 +22,7 @@ function Signup() {
           password,
         }
       );
-      console.log(response.data.user);
+      // console.log(response.data.user);
       
       // const {user} = response.data;
       if(response.data?.user){

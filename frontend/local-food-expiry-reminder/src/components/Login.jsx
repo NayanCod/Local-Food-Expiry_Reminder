@@ -22,7 +22,7 @@ function Login({setIsAuthenticated}) {
         setIsAuthenticated(true);
         toast.success("Successfully logged in!");
         Navigate("/home");
-        console.log('Logged In Successfully');
+        // console.log('Logged In Successfully');
       }
     } catch (error) {
       setError(error.response?.data?.error || 'Login failed');
@@ -31,8 +31,9 @@ function Login({setIsAuthenticated}) {
   }
 
   return (
-    <div className=" bg-gray-700 min-h-screen flex justify-center items-center">
+    <>
     <ToastContainer/>
+    <div className=" bg-gray-700 min-h-screen flex justify-center items-center">
       <div className="md:w-2/5 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-900 dark:border-neutral-700">
         <div className="p-4 sm:p-7">
           <div className="text-center">
@@ -95,12 +96,6 @@ function Login({setIsAuthenticated}) {
                     >
                       Password
                     </label>
-                    <a
-                      className="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
-                      href="../examples/html/recover-account.html"
-                    >
-                      Forgot password?
-                    </a>
                   </div>
                   <div className="relative">
                     <input
@@ -142,6 +137,7 @@ function Login({setIsAuthenticated}) {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

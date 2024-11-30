@@ -14,12 +14,12 @@ const ItemCard = ({ item, fetchItems }) => {
       const deleteItem = await axiosClient.delete(`/api/items/${id}`);
       if(deleteItem){
         toast.success("Item removed!");
-        console.log("Item removed successfullyy", deleteItem);
+        // console.log("Item removed successfullyy", deleteItem);
         fetchItems();
         setShowMenu(false);
       }
     } catch (error) {
-      console.log("Error is removing the items", error);
+      // console.log("Error is removing the items", error);
       toast.error("Error is removing the items");
       
     }

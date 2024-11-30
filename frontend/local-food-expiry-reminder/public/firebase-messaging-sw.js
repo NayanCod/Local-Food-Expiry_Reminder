@@ -48,7 +48,7 @@ messaging.onBackgroundMessage(async (payload) => {
   };
 
   if (authToken) {
-    console.log(authToken);
+    // console.log(authToken);
     
     // Log the request payload
     const notificationPayload = {
@@ -56,7 +56,7 @@ messaging.onBackgroundMessage(async (payload) => {
       message: payload.notification ? payload.notification.body : "Notification Body",
       timestamp: new Date().toISOString(),
     };
-    console.log('Notification Payload:', notificationPayload);
+    // console.log('Notification Payload:', notificationPayload);
   
     // Use the token to make an API request
     try {
@@ -70,7 +70,7 @@ messaging.onBackgroundMessage(async (payload) => {
       });
   
       const responseJson = await apiResponse.json();
-      console.log('API Response:', responseJson);
+      // console.log('API Response:', responseJson);
     } catch (error) {
       console.error('Failed to send notification to API:', error);
     }
@@ -78,7 +78,7 @@ messaging.onBackgroundMessage(async (payload) => {
     console.warn('No auth token available for API request');
   }
 
-  console.log("AUTH TOKEN IN ONBAKGROUND MESSAGE: ", authToken);
+  // console.log("AUTH TOKEN IN ONBAKGROUND MESSAGE: ", authToken);
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 

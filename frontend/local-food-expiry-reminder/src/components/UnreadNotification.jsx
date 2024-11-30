@@ -5,13 +5,13 @@ const UnreadNotification = ({ notifies, fetchNotifications }) => {
   const [hoveredNotification, setHoveredNotification] = useState(false);
 
   const handleReadNotify = async (id) => {
-    console.log(id);
+    // console.log(id);
     const readNotifi = await axiosClient.put(`/api/notification/${id}`);
     if (readNotifi) {
-      console.log("Notification read");
+      // console.log("Notification read");
       fetchNotifications();
     } else {
-      console.log("error in reading notification");
+      // console.log("error in reading notification");
     }
   };
   return (

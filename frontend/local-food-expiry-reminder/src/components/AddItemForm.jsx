@@ -16,7 +16,7 @@ const AddItemForm = ({setItems, setLoading, closeModal}) => {
             expiryDate: itemExpiryDate,
           });
           toast.success("Item added successfully!");
-          console.log("Item added", res.data?.data);
+          // console.log("Item added", res.data?.data);
     
           setItems((prevItems) => [...prevItems, res.data?.data]);
     
@@ -26,7 +26,7 @@ const AddItemForm = ({setItems, setLoading, closeModal}) => {
           setAddItemError("");
           closeModal();
         } catch (error) {
-          console.log("Error adding items", error);
+          // console.log("Error adding items", error);
           toast.error("Error in adding items");
           setAddItemError(error);
         } finally {

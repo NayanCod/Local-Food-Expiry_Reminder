@@ -15,10 +15,10 @@ exports.addNotification = async (req, res) => {
       user: user,
     });
     await notifcation.save();
-    console.log("Notifcation saved successfully");
+    // console.log("Notifcation saved successfully");
     return res.status(201).json({messaage: "notification saved successfully"});
   } catch (error) {
-    console.log("Error in saving notifcation", error);
+    // console.log("Error in saving notifcation", error);
     res.status(500).json({ error: "Failed to save notification" });
   }
 };
@@ -30,10 +30,10 @@ exports.getNotifications = async (req, res) => {
       return res.status(500).send("User not found!");
     }
     const notifications = await Notify.find({ user: user }).sort({ createdAt: -1 });
-    console.log("user's notifications: ", notifications);
+    // console.log("user's notifications: ", notifications);
     return res.status(200).json({ data: notifications });
   } catch (error) {
-    console.log("failed to fetch notifications");
+    // console.log("failed to fetch notifications");
     res.status(500).send({ error: "Failed to fetch notifications" });
   }
 };

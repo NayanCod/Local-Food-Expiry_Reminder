@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
     }
     const newUser = new User({ name, email, password });
     await newUser.save();
-    console.log("New user created", newUser);
+    // console.log("New user created", newUser);
     
     // const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
     //   expiresIn: "1d",
@@ -41,7 +41,7 @@ exports.login = async (req, res) => {
         expiresIn: "1d",
     });
     
-    console.log("logged in successfully", user);
+    // console.log("logged in successfully", user);
     res.status(201).json({ token: token, user: user.email });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -60,7 +60,7 @@ exports.storeFCMToken = async(req, res) => {
     await user.save();
 
     const items = await Item.find({user: req.user.id});
-    console.log("This users items: ", items);
+    // console.log("users items: ", items);
     
 
     res.status(201).json({message: "FCM token updated successfully"});
