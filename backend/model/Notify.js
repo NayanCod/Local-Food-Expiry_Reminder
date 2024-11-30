@@ -22,6 +22,6 @@ const NotifySchema = new mongoose.Schema({
     ref: 'User',
     required: false,
   },
-});
+}, {timestamps: true});
 
 module.exports = mongoose.model("Notify", NotifySchema);

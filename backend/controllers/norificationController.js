@@ -29,7 +29,7 @@ exports.getNotifications = async (req, res) => {
     if (!user) {
       return res.status(500).send("User not found!");
     }
-    const notifications = await Notify.find({ user: user });
+    const notifications = await Notify.find({ user: user }).sort({ createdAt: -1 });
     console.log("user's notifications: ", notifications);
     return res.status(200).json({ data: notifications });
   } catch (error) {

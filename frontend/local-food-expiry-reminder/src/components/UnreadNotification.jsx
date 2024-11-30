@@ -19,18 +19,19 @@ const UnreadNotification = ({ notifies, fetchNotifications }) => {
       {notifies.map((notify) => {
         return (
           <div
-            key={notify.timestamp}
-            className="relative p-2 my-2 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 duration-200"
+            key={notify.createdAt}
+            className="relative p-4 my-2 rounded-lg cursor-pointer bg-gray-100 hover:bg-gray-150 duration-200"
             onMouseEnter={() => setHoveredNotification(true)} // Set hover state on mouse enter
             onMouseLeave={() => setHoveredNotification(false)} // Reset hover state on mouse leave
           >
-            <h2>
+            {/* <h2>
               {notify.message.split(" ")[2]}{" "}
               {notify.message.split(" ")[3] === "is"
                 ? ""
                 : notify.message.split(" ")[3]}
-            </h2>
-            <p>{notify.message}</p>
+            </h2> */}
+            <p className="text-md text-gray-800">{notify.message}</p>
+            <p className="text-gray-500 text-sm">Recieved on: {new Date(notify.createdAt).toLocaleString()}</p>
 
             {/* Show handleClick notification when the notification is unread or hovered */}
             {!notify.isRead && hoveredNotification && (

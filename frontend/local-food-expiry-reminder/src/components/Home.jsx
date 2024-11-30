@@ -179,39 +179,9 @@ function Home() {
               </h1>
             </div>
             <div className="flex gap-4 items-center">
-              <div ref={accountIconRef} onClick={() => setShowMenu(!showMenu)}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-6 h-6 cursor-pointer"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                  />
-                </svg>
-              </div>
-              {showMenu && (
-                <div
-                  ref={accountRef}
-                  className="absolute w-30 top-14 right-12 p-3 border-1 border-gray-300 flex flex-col gap-3 shadow-md bg-gray-50 rounded-lg z-20"
-                >
-                  <FixedModal heading="Add Item" button="Add Item">
+            <FixedModal heading="Add Item" button="Add Item">
                     <AddItemForm setItems={setItems} setLoading={setLoading} />
                   </FixedModal>
-                  <WarningDialog
-                    heading="Are you sure, You want to logout ?"
-                    accept={handleLogout}
-                  >
-                    Logout
-                  </WarningDialog>
-                </div>
-              )}
-
               <div className="relative" ref={alertIconRef}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -243,6 +213,36 @@ function Home() {
                   </div>
                 )}
               </div>
+              <div ref={accountIconRef} onClick={() => setShowMenu(!showMenu)}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6 cursor-pointer"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                  />
+                </svg>
+              </div>
+              {showMenu && (
+                <div
+                  ref={accountRef}
+                  className="absolute w-30 top-16 right-3 p-3 border-1 border-gray-300 flex flex-col gap-3 shadow-md bg-gray-50 rounded-lg z-20"
+                >
+                  <WarningDialog
+                    heading="Are you sure, You want to logout ?"
+                    accept={handleLogout}
+                  >
+                    Logout
+                  </WarningDialog>
+                </div>
+              )}
+
             </div>
           </div>
           <div className="flex-grow">
@@ -250,17 +250,29 @@ function Home() {
               Your Items
             </h1>
             <Tabs activeTab={activeTab} setActiveTab={handleTabChange} />
-            <div className="my-4 overflow-y-auto h-[calc(100vh-200px)] scrollable-container">
-              {activeTab === "All" && (
-                <AllItems items={items} fetchItems={fetchItems} />
-              )}
-              {activeTab === "Fresh" && (
-                <FreshItems items={items} fetchItems={fetchItems} />
-              )}
-              {activeTab === "Expired" && (
-                <ExpiredItems items={items} fetchItems={fetchItems} />
-              )}
-            </div>
+
+            {items.length === 0 ? (
+              <div className="w-full h-[calc(100vh-300px)] flex flex-col justify-center items-center my-4">
+                <div className="text-gray-800 text-3xl font-bold">
+                  Looks like there is no item
+                </div>
+                <div className="text-gray-500 text-lg">
+                  Add some to keep track of their expiry
+                </div>
+              </div>
+            ) : (
+              <div className="my-4 overflow-y-auto h-[calc(100vh-200px)] scrollable-container">
+                {activeTab === "All" && (
+                  <AllItems items={items} fetchItems={fetchItems} />
+                )}
+                {activeTab === "Fresh" && (
+                  <FreshItems items={items} fetchItems={fetchItems} />
+                )}
+                {activeTab === "Expired" && (
+                  <ExpiredItems items={items} fetchItems={fetchItems} />
+                )}
+              </div>
+            )}
           </div>
         </div>
       </>
