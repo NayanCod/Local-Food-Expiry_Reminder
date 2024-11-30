@@ -28,7 +28,7 @@ const WarningDialog = ({ heading, accept, button, children }) => {
       {/* Button to Open Dialog */}
       <button
         onClick={openDialog}
-        className="px-4 py-1.5 bg-red-500 text-white font-medium rounded hover:bg-red-600"
+        className="px-4 py-1 bg-red-500 text-white font-medium rounded hover:bg-red-600"
       >
         {children}
       </button>

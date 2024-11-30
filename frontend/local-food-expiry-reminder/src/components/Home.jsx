@@ -14,6 +14,7 @@ import FixedModal from "./FixedModal.jsx";
 import AddItemForm from "./AddItemForm.jsx";
 import WarningDialog from "./WarningDialog.jsx";
 import Tabs from "./Tabs.jsx";
+import Logo from "./Logo.jsx";
 
 function Home() {
   const [items, setItems] = useState();
@@ -48,12 +49,9 @@ function Home() {
         });
         if (token) {
           console.log("TOKEN GENERATED", token);
-          const updateToken = await axiosClient.post(
-            "/api/auth/updateToken",
-            {
-              fcmToken: token,
-            },
-          );
+          const updateToken = await axiosClient.post("/api/auth/updateToken", {
+            fcmToken: token,
+          });
         } else {
           console.log("No registraion token available");
         }
@@ -167,29 +165,19 @@ function Home() {
         <div className="h-screen flex flex-col overflow-y-auto hide-scroll">
           <ToastContainer />
           <div className="fixed top-0 bg-white shadow-md shadow-gray-200 w-full flex justify-between px-8 py-3 items-center">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-100">
-                <span className="relative text-green-400 drop-shadow-[0_0_10px_rgba(34,197,94,0.7)]">
-                  Fresh
-                  <span className="absolute -bottom-1 left-0 w-full h-1 bg-green-500 rounded-full"></span>
-                </span>
-                <span className="text-blue-500 drop-shadow-[0_0_10px_rgba(59,130,246,0.7)]">
-                  Track
-                </span>
-              </h1>
-            </div>
+            <Logo/>
             <div className="flex gap-4 items-center">
-            <FixedModal heading="Add Item" button="Add Item">
-                    <AddItemForm setItems={setItems} setLoading={setLoading} />
-                  </FixedModal>
-              <div className="relative" ref={alertIconRef}>
+              <FixedModal heading="Add Item" button="Add Item">
+                <AddItemForm setItems={setItems} setLoading={setLoading} />
+              </FixedModal>
+              <div className="relative cursor-pointer" ref={alertIconRef}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="currentColor"
-                  className="w-6 h-6 cursor-pointer"
+                  className="w-6 h-6 hover:text-green-600"
                   onClick={alertClick}
                 >
                   <path
@@ -220,7 +208,7 @@ function Home() {
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="currentColor"
-                  className="w-6 h-6 cursor-pointer"
+                  className="w-6 h-6 cursor-pointer hover:text-green-600"
                 >
                   <path
                     strokeLinecap="round"
@@ -242,11 +230,10 @@ function Home() {
                   </WarningDialog>
                 </div>
               )}
-
             </div>
           </div>
           <div className="flex-grow">
-            <h1 className="ml-6 mt-20 text-3xl text-gray-800 font-semibold font-sans my-6">
+            <h1 className="ml-6 mt-20 text-3xl text-blue-600 font-semibold font-sans my-6">
               Your Items
             </h1>
             <Tabs activeTab={activeTab} setActiveTab={handleTabChange} />

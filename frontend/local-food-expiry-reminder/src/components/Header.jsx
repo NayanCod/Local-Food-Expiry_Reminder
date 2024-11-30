@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Logo from "./Logo";
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,20 +10,11 @@ function Header() {
 
   return (
     <>
-      <header className="fixed top-0 w-full bg-white text-sm py-3 shadow-md">
+      <header className="relative md:fixed md:top-0 w-full bg-white text-sm py-3 shadow-md">
         <nav className="max-w-[85rem] mx-auto px-4 sm:flex sm:items-center sm:justify-between">
           {/* Brand Logo */}
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl flex font-bold">
-              <span className="relative text-green-500 drop-shadow-[0_0_10px_rgba(52,199,89,0.5)]">
-                Fresh
-                <span className="absolute -bottom-1 left-0 w-full h-1 bg-green-500 rounded-full"></span>
-              </span>
-              <span className="ml-1 text-blue-600 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]">
-                Track
-              </span>
-            </h1>
-
+            <Logo/>
             {/* Mobile Menu Toggle */}
             <div className="sm:hidden">
               <button
@@ -69,7 +61,7 @@ function Header() {
             <div className="flex flex-col gap-5 mt-5 sm:flex-row sm:items-center sm:justify-end sm:mt-0 sm:pl-5">
               <Link
                 to="/home"
-                className="font-medium flex items-center gap-1 text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                className="font-medium flex items-center gap-1 text-gray-600 hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +81,7 @@ function Header() {
               </Link>
               <Link
                 to="/home"
-                className="font-medium flex items-center gap-1 text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                className="font-medium flex items-center gap-1 text-gray-600 hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function Hero() {
   const isAuthenticated = !!localStorage.getItem("jwtToken");
   return (
-    <div className="bg-blue-600 text-white mt-[3.5rem]">
+    <div className="bg-blue-600 text-white mt-0 md:mt-3.5">
   <div className="max-w-[85rem] flex flex-col justify-center items-center gap-y-6 mx-auto px-4 sm:px-6 lg:px-8 py-24">
     {/* Hero Heading */}
     <div className="max-w-3xl text-center mx-auto">
@@ -15,8 +15,8 @@ function Hero() {
     {/* Hero Description */}
     <div className="max-w-3xl text-center mx-auto">
       <p className="text-lg text-white/80 leading-relaxed">
-        Introducing <strong className="text-white">FreshTrack</strong>, your smart companion for managing food expiry dates. 
-        Scan QR codes, track expiry dates, and get timely reminders to ensure nothing goes bad. 
+        Introducing <strong className="text-white">FreshTrack</strong>, your smart companion for managing items expiry dates. 
+        Track expiry dates, and get timely reminders to ensure nothing goes bad. 
         Simplify your kitchen and reduce waste effortlessly with our intuitive app.
       </p>
     </div>
