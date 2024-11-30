@@ -52,10 +52,10 @@ function Contact() {
         <div className="max-w-xl mx-auto">
           {/* Section Heading */}
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-800 sm:text-4xl">
+            <h1 className="text-3xl font-bold text-green-500 sm:text-4xl">
               Contact us
             </h1>
-            <p className="mt-1 text-gray-600">
+            <p className="mt-1 text-green-700">
               We would love to talk about how we can help you.
             </p>
           </div>

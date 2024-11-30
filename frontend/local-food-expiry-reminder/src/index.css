@@ -37,7 +37,7 @@ body {
 .scrollable-container::-webkit-scrollbar-thumb {
   background-color: #4CAF50;  /* Green color for the thumb */
   border-radius: 50%;        /* Rounded thumb */
-  border: 3px solid #f0f0f0;  /* Border around the thumb to create separation */
+  /* border: 3px solid #f0f0f0;  Border around the thumb to create separation */
 }
 
 /* Hover effect for the scrollbar thumb */

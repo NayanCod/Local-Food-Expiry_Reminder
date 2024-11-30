@@ -48,16 +48,11 @@ function Home() {
         });
         if (token) {
           console.log("TOKEN GENERATED", token);
-          const updateToken = await axios.post(
-            "http://localhost:8080/api/auth/updateToken",
+          const updateToken = await axiosClient.post(
+            "/api/auth/updateToken",
             {
               fcmToken: token,
             },
-            {
-              headers: {
-                Authorization: `Bearer ${authToken}`,
-              },
-            }
           );
         } else {
           console.log("No registraion token available");
@@ -66,7 +61,7 @@ function Home() {
         console.error("Error getiing FCM token: ", error);
       }
     } else if (permission === "denied") {
-      alert(
+      toast.info(
         "You denied the permission. Please grant it to use this app efficiently"
       );
     }
