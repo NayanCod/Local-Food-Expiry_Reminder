@@ -5,7 +5,7 @@ import App from "./App.jsx";
 
 
 if ('BroadcastChannel' in window) {
-  console.log("Broadccats is supported");
+  console.log("Broadcast is supported");
   
   // Create a BroadcastChannel instance
   const broadcast = new BroadcastChannel('auth-channel');
