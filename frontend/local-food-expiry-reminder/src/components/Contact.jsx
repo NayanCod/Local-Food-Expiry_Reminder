@@ -1,120 +1,185 @@
-
+import { useState } from "react";
+import emailjs from "emailjs-com";
+import { toast, ToastContainer } from "react-toastify";
 
 function Contact() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [details, setDetails] = useState("");
+  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const userID = import.meta.env.VITE_EMAILJS_USER_ID;
+  console.log(serviceId, templateId, userID);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      details,
+    };
+    
+
+    // Using EmailJS to send the email
+    emailjs
+      .send(serviceId, templateId, formData, userID)
+      .then(
+        (response) => {
+          console.log("SUCCESS:", response);
+          toast.success("Your inquiry has been sent!");
+          // Reset the form fields
+          setFirstName("");
+          setLastName("");
+          setEmail("");
+          setPhoneNumber("");
+          setDetails("");
+        },
+        (err) => {
+          console.log("FAILED:", err);
+          alert("Something went wrong. Please try again.");
+        }
+      );
+  };
   return (
     <>
-      <div className="w-full bg-black px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+    <ToastContainer/>
+      <div className="w-full bg-gray-100 px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
         <div className="max-w-xl mx-auto">
+          {/* Section Heading */}
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-800 sm:text-4xl dark:text-white">
+            <h1 className="text-3xl font-bold text-gray-800 sm:text-4xl">
               Contact us
             </h1>
-            <p className="mt-1 text-gray-600 dark:text-neutral-400">
+            <p className="mt-1 text-gray-600">
               We would love to talk about how we can help you.
             </p>
           </div>
         </div>
 
         <div className="mt-12 max-w-lg mx-auto">
-          <div className="flex flex-col border rounded-xl p-4 sm:p-6 lg:p-8 dark:border-neutral-700">
-            <h2 className="mb-8 text-xl font-semibold text-gray-800 dark:text-neutral-200">
+          {/* Contact Form */}
+          <div className="flex flex-col border border-gray-200 rounded-xl p-6 lg:p-8 shadow-md bg-white">
+            <h2 className="mb-8 text-xl font-semibold text-gray-800">
               Fill in the form
             </h2>
 
-            <form>
-              <div className="grid gap-4 lg:gap-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+            <form onSubmit={handleSubmit}>
+              {/* Form Fields */}
+              <div className="grid gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* First Name */}
                   <div>
                     <label
                       htmlFor="hs-firstname-contacts-1"
-                      className="block mb-2 text-sm text-gray-700 font-medium dark:text-white"
+                      className="block mb-2 text-sm font-medium text-gray-700"
                     >
                       First Name
                     </label>
                     <input
                       type="text"
-                      name="hs-firstname-contacts-1"
+                      name="firstName"
                       id="hs-firstname-contacts-1"
-                      className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                      className="py-3 px-4 block w-full border border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
                     />
                   </div>
 
+                  {/* Last Name */}
                   <div>
                     <label
                       htmlFor="hs-lastname-contacts-1"
-                      className="block mb-2 text-sm text-gray-700 font-medium dark:text-white"
+                      className="block mb-2 text-sm font-medium text-gray-700"
                     >
                       Last Name
                     </label>
                     <input
                       type="text"
-                      name="hs-lastname-contacts-1"
+                      name="lastName"
                       id="hs-lastname-contacts-1"
-                      className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                      className="py-3 px-4 block w-full border border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* Email */}
                   <div>
                     <label
                       htmlFor="hs-email-contacts-1"
-                      className="block mb-2 text-sm text-gray-700 font-medium dark:text-white"
+                      className="block mb-2 text-sm font-medium text-gray-700"
                     >
                       Email
                     </label>
                     <input
                       type="email"
-                      name="hs-email-contacts-1"
+                      name="email"
                       id="hs-email-contacts-1"
                       autoComplete="email"
-                      className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                      className="py-3 px-4 block w-full border border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
 
+                  {/* Phone Number */}
                   <div>
                     <label
                       htmlFor="hs-phone-number-1"
-                      className="block mb-2 text-sm text-gray-700 font-medium dark:text-white"
+                      className="block mb-2 text-sm font-medium text-gray-700"
                     >
                       Phone Number
                     </label>
                     <input
                       type="text"
-                      name="hs-phone-number-1"
+                      name="phoneNumber"
                       id="hs-phone-number-1"
-                      className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                      className="py-3 px-4 block w-full border border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
                     />
                   </div>
                 </div>
 
+                {/* Details */}
                 <div>
                   <label
                     htmlFor="hs-about-contacts-1"
-                    className="block mb-2 text-sm text-gray-700 font-medium dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-700"
                   >
                     Details
                   </label>
                   <textarea
                     id="hs-about-contacts-1"
-                    name="hs-about-contacts-1"
+                    name="details"
                     rows="4"
-                    className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                    className="py-3 px-4 block w-full border border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
+                    value={details}
+                    onChange={(e) => setDetails(e.target.value)}
                   ></textarea>
                 </div>
               </div>
 
-              <div className="mt-6 grid">
+              {/* Submit Button */}
+              <div className="mt-6">
                 <button
                   type="submit"
-                  className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+                  className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 transition"
                 >
                   Send inquiry
                 </button>
               </div>
 
+              {/* Footer Note */}
               <div className="mt-3 text-center">
-                <p className="text-sm text-gray-500 dark:text-neutral-500">
+                <p className="text-sm text-gray-500">
                   We will get back to you in 1-2 business days.
                 </p>
               </div>

@@ -6,10 +6,14 @@ import Hero from "./Hero";
 function LandingPage() {
   return (
     <>
-      <Header />
-      <Hero />
-      <Contact />
-      <Footer />
+      <div className="w-full">
+        <div className="relative">
+          <Header />
+        </div>
+        <Hero />
+        <Contact />
+        <Footer />
+      </div>
     </>
   );
 }

@@ -9,20 +9,25 @@ function Header() {
 
   return (
     <>
-      <header className="relative flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-white text-sm py-3 dark:bg-neutral-800">
-        <nav className="max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between">
+      <header className="fixed top-0 w-full bg-white text-sm py-3 shadow-md">
+        <nav className="max-w-[85rem] mx-auto px-4 sm:flex sm:items-center sm:justify-between">
+          {/* Brand Logo */}
           <div className="flex items-center justify-between">
-            <a
-              className="flex-none text-xl font-semibold dark:text-white focus:outline-none focus:opacity-80"
-              href="#"
-              aria-label="Brand"
-            >
-              FreshTrack
-            </a>
+            <h1 className="text-2xl flex font-bold">
+              <span className="relative text-green-500 drop-shadow-[0_0_10px_rgba(52,199,89,0.5)]">
+                Fresh
+                <span className="absolute -bottom-1 left-0 w-full h-1 bg-green-500 rounded-full"></span>
+              </span>
+              <span className="ml-1 text-blue-600 drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]">
+                Track
+              </span>
+            </h1>
+
+            {/* Mobile Menu Toggle */}
             <div className="sm:hidden">
               <button
                 type="button"
-                className="hs-collapse-toggle  size-7 flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-white dark:hover:bg-white/10 dark:focus:bg-white/10"
+                className="hs-collapse-toggle flex justify-center items-center gap-x-2 rounded-lg border border-gray-300 bg-white text-gray-800 shadow hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
                 id="hs-navbar-example-collapse"
                 aria-expanded="false"
                 aria-controls="hs-navbar-example"
@@ -30,10 +35,8 @@ function Header() {
                 data-hs-collapse="#hs-navbar-example"
               >
                 <svg
-                  className="hs-collapse-open:hidden shrink-0 size-4"
+                  className="hs-collapse-open:hidden shrink-0 w-5 h-5"
                   xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -43,41 +46,39 @@ function Header() {
                   <line x1="3" x2="21" y1="18" y2="18" />
                 </svg>
                 <svg
-                  className="hs-collapse-open:block hidden shrink-0 size-4"
+                  className="hs-collapse-open:block hidden shrink-0 w-5 h-5"
                   xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
                 >
                   <path d="M18 6 6 18" />
-                  <path d="m6 6 12 12" />
+                  <path d="M6 6l12 12" />
                 </svg>
                 <span className="sr-only">Toggle navigation</span>
               </button>
             </div>
           </div>
+
+          {/* Navbar Links */}
           <div
             id="hs-navbar-example"
             className="hidden hs-collapse overflow-hidden transition-all duration-300 basis-full grow sm:block"
             aria-labelledby="hs-navbar-example-collapse"
           >
-            <div className="flex flex-col gap-5 mt-5 sm:flex-row sm:items-center sm:justify-end sm:mt-0 sm:ps-5">
-              <Link to="/home"
-                className="font-medium text-blue-500 focus:outline-none"
-                href="#"
-                aria-current="page"
+            <div className="flex flex-col gap-5 mt-5 sm:flex-row sm:items-center sm:justify-end sm:mt-0 sm:pl-5">
+              <Link
+                to="/home"
+                className="font-medium text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300"
               >
                 Home
               </Link>
-              <Link to="/home"
-                className="font-medium text-gray-600 hover:text-gray-400 focus:outline-none focus:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
-                href="#"
+              <Link
+                to="/my-list"
+                className="font-medium text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300"
               >
                 My List
               </Link>
-              
             </div>
           </div>
         </nav>
