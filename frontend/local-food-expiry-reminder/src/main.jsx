@@ -3,41 +3,49 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 
-
-if ('BroadcastChannel' in window) {
-  console.log("Broadcast is supported");
-  
-  // Create a BroadcastChannel instance
-  const broadcast = new BroadcastChannel('auth-channel');
-
- // Function to send the token
- const sendAuthToken = () => {
-  const authToken = localStorage.getItem('token');
-  broadcast.postMessage({ type: 'SET_AUTH_TOKEN', token: authToken });
+// Function to send the token to the BroadcastChannel
+const sendAuthToken = () => {
+  const authToken = localStorage.getItem("token");
+  if (authToken) {
+    broadcast.postMessage({ type: "SET_AUTH_TOKEN", token: authToken });
+  }
 };
 
-// Initial check for the token
-sendAuthToken();
+// Check if BroadcastChannel is supported
+let broadcast = null;
+if ("BroadcastChannel" in window) {
+  console.log("BroadcastChannel is supported");
+  broadcast = new BroadcastChannel("auth-channel");
 
-// Listen for the tokenUpdated event
-window.addEventListener('tokenUpdated', sendAuthToken);
-}else{
-  console.log("broadcats is not supported");
+  // Initial check for the token
+  sendAuthToken();
+
+  // Listen for the tokenUpdated event
+  window.addEventListener("tokenUpdated", sendAuthToken);
+} else {
+  console.log("BroadcastChannel is not supported");
 }
 
-if ('serviceWorker' in navigator) {
+// Register Service Worker
+if ("serviceWorker" in navigator) {
   navigator.serviceWorker
-    .register('/firebase-messaging-sw.js', { scope: "/" })
+    .register("/firebase-messaging-sw.js", { scope: "/" })
     .then((registration) => {
-      console.log('Service Worker registered with scope:', registration.scope);
+      console.log("Service Worker registered with scope:", registration.scope);
+
+      // Send token to service worker during app initialization
+      sendAuthToken();
     })
     .catch((error) => {
-      console.error('Service Worker registration failed:', error);
+      console.error("Service Worker registration failed:", error);
     });
 }
 
+// Render the App
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <App />
   </StrictMode>
 );
+
+export { broadcast }; // Export the broadcast instance for use in App

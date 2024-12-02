@@ -15,6 +15,7 @@ const ItemSchema = new mongoose.Schema({
     ref: "User",
   },
   notified: { type: Boolean, default: false },
+  notifiedIntervals: { type: [Number], default: [] },
 }, { timestamps: true });
 
 module.exports = mongoose.model("Item", ItemSchema);

@@ -2,36 +2,40 @@ import { useState } from "react";
 import axiosClient from "../../axiosConfig";
 import { toast } from "react-toastify";
 
-const AddItemForm = ({setItems, setLoading, closeModal}) => {
-    const [itemName, setItemName] = useState("");
-    const [itemExpiryDate, setItemExpiryDate] = useState(null);
-    const [addItemError, setAddItemError] = useState("");
+const AddItemForm = ({ setItems, setLoading, closeModal }) => {
+  const [itemName, setItemName] = useState("");
+  const [itemExpiryDate, setItemExpiryDate] = useState(null);
+  const [addItemError, setAddItemError] = useState("");
 
-    const handleAddItem = async (e) => {
-        e.preventDefault();
-        try {
-          const res = await axiosClient.post("/api/items/addItem", {
-            name: itemName,
-            expiryDate: itemExpiryDate,
-          });
-          toast.success("Item added successfully!");
-          // console.log("Item added", res.data?.data);
-    
-          setItems((prevItems) => [...prevItems, res.data?.data]);
-    
-          // Reset form inputs
-          setItemName("");
-          setItemExpiryDate("");
-          setAddItemError("");
-          closeModal();
-        } catch (error) {
-          // console.log("Error adding items", error);
-          toast.error("Error in adding items");
-          setAddItemError(error);
-        } finally {
-          setLoading(false);
-        }
-      };
+  const testExpiryDate = new Date();
+  testExpiryDate.setMinutes(testExpiryDate.getMinutes() + 5);
+  const handleAddItem = async (e) => {
+    e.preventDefault();
+    try {
+      const formattedExpiryDate = new Date(itemExpiryDate);
+      formattedExpiryDate.setHours(0, 0, 0, 0);
+      const res = await axiosClient.post("/api/items/addItem", {
+        name: itemName,
+        expiryDate: itemExpiryDate,
+      });
+      toast.success("Item added successfully!");
+      // console.log("Item added", res.data?.data);
+
+      setItems((prevItems) => [...prevItems, res.data?.data]);
+
+      // Reset form inputs
+      setItemName("");
+      setItemExpiryDate("");
+      setAddItemError("");
+      closeModal();
+    } catch (error) {
+      // console.log("Error adding items", error);
+      toast.error("Error in adding items");
+      setAddItemError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <form
       onSubmit={handleAddItem}

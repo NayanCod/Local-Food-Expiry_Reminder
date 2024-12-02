@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
+import { broadcast } from "../main";
 function Login({setIsAuthenticated}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +19,10 @@ function Login({setIsAuthenticated}) {
       });
       if(response.data?.token){
         localStorage.setItem('token', response.data?.token);
-        window.dispatchEvent(new Event('tokenUpdated'));
+        if (broadcast) {
+          broadcast.postMessage({ type: "SET_AUTH_TOKEN", token: response.data?.token });
+        }
+        window.dispatchEvent(new Event("tokenUpdated"));
         setIsAuthenticated(true);
         toast.success("Successfully logged in!");
         Navigate("/home");
