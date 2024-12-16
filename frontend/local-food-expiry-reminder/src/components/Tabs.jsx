@@ -27,6 +27,12 @@ const Tabs = ({ activeTab, setActiveTab }) => {
       >
         Expired
       </button>
+      <button
+        onClick={() => setActiveTab("About to Expired")}
+        className={getTabClass("About to Expired")}
+      >
+        About to Expired
+      </button>
     </div>
   );
 };

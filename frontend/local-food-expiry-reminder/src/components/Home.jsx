@@ -15,6 +15,7 @@ import AddItemForm from "./AddItemForm.jsx";
 import WarningDialog from "./WarningDialog.jsx";
 import Tabs from "./Tabs.jsx";
 import Logo from "./Logo.jsx";
+import AboutToExpiredItems from "./AboutToExpiredItems.jsx";
 
 function Home() {
   const [items, setItems] = useState();
@@ -31,8 +32,6 @@ function Home() {
   const alertIconRef = useRef(null);
   const accountIconRef = useRef(null);
   const accountRef = useRef(null);
-
-  const authToken = localStorage.getItem("token");
 
   const handleTabChange = (tabName) => {
     disableAllFilter();
@@ -257,6 +256,9 @@ function Home() {
                 )}
                 {activeTab === "Expired" && (
                   <ExpiredItems items={items} fetchItems={fetchItems} />
+                )}
+                {activeTab === "About to Expire" && (
+                  <AboutToExpiredItems items={items} fetchItems={fetchItems} />
                 )}
               </div>
             )}

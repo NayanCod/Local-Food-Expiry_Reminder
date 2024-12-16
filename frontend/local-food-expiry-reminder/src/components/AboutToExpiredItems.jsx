@@ -1,11 +1,9 @@
 import ItemCard from "./ItemCard";
 
 const ExpiredItems = ({ items, fetchItems }) => {
-  const now = new Date(); // Current date and time
-
-  // Filter items that are notified and have an expiryDate in the past
+  const now = new Date();
   const expiredItems = items.filter(
-    (item) => new Date(item.expiryDate) < now // Ensure expiryDate is earlier than now
+    (item) => item.notified && new Date(item.expiryDate) > now
   );
 
   return (
@@ -13,7 +11,7 @@ const ExpiredItems = ({ items, fetchItems }) => {
       {expiredItems.length === 0 ? (
         <div className="w-full h-[calc(100vh-300px)] flex flex-col justify-center items-center my-4">
           <div className="text-gray-800 text-xl md:text-3xl font-bold">
-            Looks like there is no expired item
+            Looks like there is no item is about to expire
           </div>
         </div>
       ) : (
