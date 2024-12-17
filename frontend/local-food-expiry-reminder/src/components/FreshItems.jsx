@@ -3,7 +3,9 @@ import ItemCard from "./ItemCard";
 const FreshItems = ({ items, fetchItems }) => {
   const now = new Date();
   const freshItems = items.filter(
-    (item) => new Date(item.expiryDate) > now 
+    (item) => {
+      !item.notified && new Date(item.expiryDate) > now 
+    }
   );
 
   return (
@@ -11,7 +13,7 @@ const FreshItems = ({ items, fetchItems }) => {
       {freshItems.length === 0 ? (
         <div className="w-full h-[calc(100vh-300px)] flex flex-col justify-center items-center my-4">
           <div className="text-gray-800 text-xl md:text-3xl font-bold">
-            Looks like there are no fresh items
+            Looks like there is no fresh items
           </div>
         </div>
       ) : (

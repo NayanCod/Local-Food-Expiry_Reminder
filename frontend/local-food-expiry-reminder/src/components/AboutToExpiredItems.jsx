@@ -1,10 +1,12 @@
 import ItemCard from "./ItemCard";
 
-const ExpiredItems = ({ items, fetchItems }) => {
+const AboutToExpiredItems = ({ items, fetchItems }) => {
   const now = new Date();
   const expiredItems = items.filter(
     (item) => item.notified && new Date(item.expiryDate) > now
   );
+  console.log("ABOUT TO EXPIRE: ", expiredItems);
+  
 
   return (
     <div className="mx-6 my-6 flex flex-wrap gap-6 justify-center md:justify-start">
@@ -23,4 +25,4 @@ const ExpiredItems = ({ items, fetchItems }) => {
   );
 };
 
-export default ExpiredItems;
+export default AboutToExpiredItems;

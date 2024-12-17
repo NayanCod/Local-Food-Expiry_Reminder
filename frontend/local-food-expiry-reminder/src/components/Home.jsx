@@ -257,7 +257,7 @@ function Home() {
                 {activeTab === "Expired" && (
                   <ExpiredItems items={items} fetchItems={fetchItems} />
                 )}
-                {activeTab === "About to Expire" && (
+                {activeTab === "Expiring" && (
                   <AboutToExpiredItems items={items} fetchItems={fetchItems} />
                 )}
               </div>

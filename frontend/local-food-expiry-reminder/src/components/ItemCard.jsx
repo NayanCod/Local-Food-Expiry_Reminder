@@ -8,7 +8,7 @@ const ItemCard = ({ item, fetchItems }) => {
   const menuRef = useRef(null);
 
   const now = new Date();
-  const isExpired = item?.notified || new Date(item.expiryDate) < now;
+  const isExpired = item?.notified && new Date(item.expiryDate) < now;
   const isFresh = !item?.notified && new Date(item.expiryDate) > now;
   const isAboutToExpire = item?.notified && new Date(item.expiryDate) > now;
 
@@ -94,27 +94,17 @@ const ItemCard = ({ item, fetchItems }) => {
       </div>
 
       <p className="text-gray-600 mt-2">
-        {isExpired && (
+        {item?.expiryDate && (
           <>
-            Expired on:{" "}
+            {isExpired
+              ? "Expired on: "
+              : isFresh
+              ? "Expiry Date: "
+              : isAboutToExpire
+              ? "Expiring On: "
+              : null}
             <span className="font-medium">
-              {new Date(item?.expiryDate).toLocaleString()}
-            </span>
-          </>
-        )}
-        {isFresh && (
-          <>
-            Expiry Date:{" "}
-            <span className="font-medium">
-              {new Date(item?.expiryDate).toLocaleString()}
-            </span>
-          </>
-        )}
-        {isAboutToExpire && (
-          <>
-            Expiring On:{" "}
-            <span className="font-medium">
-              {new Date(item?.expiryDate).toLocaleString()}
+              {new Date(item.expiryDate).toLocaleString()}
             </span>
           </>
         )}
