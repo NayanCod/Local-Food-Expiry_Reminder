@@ -1,11 +1,10 @@
 import ItemCard from "./ItemCard";
 
 const ExpiredItems = ({ items, fetchItems }) => {
-  const now = new Date(); // Current date and time
+  const now = new Date();
 
-  // Filter items that are notified and have an expiryDate in the past
   const expiredItems = items.filter(
-    (item) => new Date(item.expiryDate) < now // Ensure expiryDate is earlier than now
+    (item) => new Date(item.expiryDate) < now
   );
 
   return (
