@@ -127,7 +127,7 @@ function Home() {
         });
         fetchNotifications();
       } catch (error) {
-        // console.error("Failed to save notification:", error);
+        console.error("Failed to save notification:", error);
       }
     });
 
