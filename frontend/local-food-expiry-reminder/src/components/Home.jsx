@@ -109,11 +109,15 @@ function Home() {
     fetchItems();
     fetchNotifications();
 
+    const beepSound = new Audio('/notificationBeep.mp3');
+
     const unsubscribe = onMessage(messaging, async (payload) => {
-      // console.log("foregournd message recieved", payload);
+      console.log("foregournd message recieved", payload);
 
       const { title, body } = payload.notification || {};
       toast.info(`📢 ${title}: ${body}`);
+
+      beepSound.play().catch(error => console.error("Failed to play beep sound:", error));
 
       try {
         await axiosClient.post("/api/notification", {

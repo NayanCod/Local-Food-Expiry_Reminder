@@ -73,16 +73,16 @@ const WarningDialog = ({ heading, accept, button, children }) => {
             {/* Modal Actions */}
             <div className="flex justify-center gap-4">
               <button
-                onClick={handleAccept}
-                className="w-1/2 px-4 py-2 bg-green-500 text-white font-medium rounded hover:bg-green-600"
-              >
-                Yes
-              </button>
-              <button
                 onClick={closeDialog}
                 className="w-1/2 px-4 py-2 bg-red-500 text-gray-100 font-medium rounded hover:bg-red-600"
               >
                 No
+              </button>
+              <button
+                onClick={handleAccept}
+                className="w-1/2 px-4 py-2 bg-green-500 text-white font-medium rounded hover:bg-green-600"
+              >
+                Yes
               </button>
             </div>
           </div>

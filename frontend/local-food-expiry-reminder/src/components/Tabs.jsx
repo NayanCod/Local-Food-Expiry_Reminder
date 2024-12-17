@@ -38,7 +38,7 @@ const Tabs = ({ activeTab, setActiveTab }) => {
           activeTab === "Expiring"
             ? "bg-orange-500 text-white"
             : "bg-gray-200"
-        } animate-pulse duration-75`}
+        }`}
       >
         Expiring
       </button>

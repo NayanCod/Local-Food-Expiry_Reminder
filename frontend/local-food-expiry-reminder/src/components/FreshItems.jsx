@@ -2,14 +2,9 @@ import ItemCard from "./ItemCard";
 
 const FreshItems = ({ items, fetchItems }) => {
   const now = new Date();
-  console.log("items: ", items);
-  console.log("fetchItems: ", fetchItems);
-  
-  
   const freshItems = items.filter(
     (item) => !item.notified && new Date(item.expiryDate) > now 
   );
-  console.log(freshItems);
 
   return (
     <div className="mx-6 my-6 flex flex-wrap gap-6 justify-center md:justify-start">
