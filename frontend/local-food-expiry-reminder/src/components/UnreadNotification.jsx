@@ -24,12 +24,6 @@ const UnreadNotification = ({ notifies, fetchNotifications }) => {
             onMouseEnter={() => setHoveredNotification(true)} // Set hover state on mouse enter
             onMouseLeave={() => setHoveredNotification(false)} // Reset hover state on mouse leave
           >
-            {/* <h2>
-              {notify.message.split(" ")[2]}{" "}
-              {notify.message.split(" ")[3] === "is"
-                ? ""
-                : notify.message.split(" ")[3]}
-            </h2> */}
             <p className="text-md text-gray-800">{notify.message}</p>
             <p className="text-gray-500 text-sm">Recieved on: {new Date(notify.createdAt).toLocaleString()}</p>
 

@@ -5,8 +5,6 @@ const AboutToExpiredItems = ({ items, fetchItems }) => {
   const expiredItems = items.filter(
     (item) => item.notified && new Date(item.expiryDate) > now
   );
-  console.log("ABOUT TO EXPIRE: ", expiredItems);
-  
 
   return (
     <div className="mx-6 my-6 flex flex-wrap gap-6 justify-center md:justify-start">
