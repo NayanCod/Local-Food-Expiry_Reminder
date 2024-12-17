@@ -8,12 +8,28 @@ function Contact() {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [details, setDetails] = useState("");
+  const [errors, setErrors] = useState({});
   const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
   const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
   const userID = import.meta.env.VITE_EMAILJS_USER_ID;
 
+  const validate = () => {
+    const errors = {};
+    if (!firstName) errors.firstName = "First Name is required";
+    if (!email) errors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(email)) errors.email = "Email is invalid";
+    if (!phoneNumber) errors.phoneNumber = "Phone number is required";
+    else if (!/^\d{10}$/.test(phoneNumber)) errors.phoneNumber = "Phone number must be 10 digits";
+    if (!details) errors.details = "Details are required";
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (!validate()) return;
 
     const formData = {
       firstName,
@@ -22,7 +38,6 @@ function Contact() {
       phoneNumber,
       details,
     };
-    
 
     // Using EmailJS to send the email
     emailjs
@@ -42,9 +57,10 @@ function Contact() {
         }
       );
   };
+
   return (
     <>
-    <ToastContainer/>
+      <ToastContainer />
       <div className="w-full bg-gray-100 px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
         <div className="max-w-xl mx-auto">
           {/* Section Heading */}
@@ -81,10 +97,13 @@ function Contact() {
                       type="text"
                       name="firstName"
                       id="hs-firstname-contacts-1"
-                      className="py-3 px-4 block w-full border border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
+                      className={`py-3 px-4 block w-full border ${errors.firstName ? "border-red-500" : "border-gray-400"} rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500`}
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                     />
+                    {errors.firstName && (
+                      <p className="text-sm text-red-500">{errors.firstName}</p>
+                    )}
                   </div>
 
                   {/* Last Name */}
@@ -99,10 +118,13 @@ function Contact() {
                       type="text"
                       name="lastName"
                       id="hs-lastname-contacts-1"
-                      className="py-3 px-4 block w-full border border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
+                      className={`py-3 px-4 block w-full border ${errors.lastName ? "border-red-500" : "border-gray-400"} rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500`}
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
                     />
+                    {errors.lastName && (
+                      <p className="text-sm text-red-500">{errors.lastName}</p>
+                    )}
                   </div>
                 </div>
 
@@ -120,10 +142,13 @@ function Contact() {
                       name="email"
                       id="hs-email-contacts-1"
                       autoComplete="email"
-                      className="py-3 px-4 block w-full border border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
+                      className={`py-3 px-4 block w-full border ${errors.email ? "border-red-500" : "border-gray-400"} rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500`}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
+                    {errors.email && (
+                      <p className="text-sm text-red-500">{errors.email}</p>
+                    )}
                   </div>
 
                   {/* Phone Number */}
@@ -138,10 +163,13 @@ function Contact() {
                       type="text"
                       name="phoneNumber"
                       id="hs-phone-number-1"
-                      className="py-3 px-4 block w-full border border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
+                      className={`py-3 px-4 block w-full border ${errors.phoneNumber ? "border-red-500" : "border-gray-400"} rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500`}
                       value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
                     />
+                    {errors.phoneNumber && (
+                      <p className="text-sm text-red-500">{errors.phoneNumber}</p>
+                    )}
                   </div>
                 </div>
 
@@ -157,10 +185,13 @@ function Contact() {
                     id="hs-about-contacts-1"
                     name="details"
                     rows="4"
-                    className="py-3 px-4 block w-full border border-gray-400 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
+                    className={`py-3 px-4 block w-full border ${errors.details ? "border-red-500" : "border-gray-400"} rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500`}
                     value={details}
                     onChange={(e) => setDetails(e.target.value)}
                   ></textarea>
+                  {errors.details && (
+                    <p className="text-sm text-red-500">{errors.details}</p>
+                  )}
                 </div>
               </div>
 
