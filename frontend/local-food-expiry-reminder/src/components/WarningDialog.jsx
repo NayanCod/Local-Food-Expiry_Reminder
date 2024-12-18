@@ -74,15 +74,15 @@ const WarningDialog = ({ heading, accept, button, children }) => {
             <div className="flex justify-center gap-4">
               <button
                 onClick={closeDialog}
-                className="w-1/2 px-4 py-2 bg-red-500 text-gray-100 font-medium rounded hover:bg-red-600"
+                className="w-1/2 px-4 py-2 bg-red-500 text-white font-medium rounded hover:bg-red-600"
               >
-                No
+                No, Cancel it
               </button>
               <button
                 onClick={handleAccept}
-                className="w-1/2 px-4 py-2 bg-green-500 text-white font-medium rounded hover:bg-green-600"
+                className="w-1/2 px-4 py-2 border-2 border-gray-800 text-gray-800 font-medium rounded hover:bg-gray-100"
               >
-                Yes
+                Yes, I'm sure
               </button>
             </div>
           </div>
