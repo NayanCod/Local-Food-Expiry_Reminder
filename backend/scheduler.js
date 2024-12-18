@@ -44,7 +44,6 @@ const checkExpiringItems = async () => {
             // Add this interval to notifiedIntervals to avoid resending the same notification
             item.notifiedIntervals.push(interval);
 
-
             // If it's the third notification (4 days remaining), mark notified as true
             if (interval < 4) {
               item.notified = true;
