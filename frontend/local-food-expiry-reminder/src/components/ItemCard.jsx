@@ -104,7 +104,11 @@ const ItemCard = ({ item, fetchItems }) => {
               ? "Expiring On: "
               : null}
             <span className="font-medium">
-              {new Date(item.expiryDate).toLocaleString()}
+              {new Date(item.expiryDate).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              })}
             </span>
           </>
         )}

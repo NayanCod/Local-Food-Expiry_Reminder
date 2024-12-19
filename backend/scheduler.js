@@ -23,7 +23,7 @@ const checkExpiringItems = async () => {
     // Find items that are yet to expire, and haven't been fully notified
     const expiringItems = await Item.find({
       expiryDate: { $gte: now },
-      notified: false, // Only consider items that haven't been fully notified
+      // notified: false, // Only consider items that haven't been fully notified
     });
 
     console.log("Items that don't expire yet:", expiringItems);
@@ -46,7 +46,9 @@ const checkExpiringItems = async () => {
 
             // If it's the third notification (4 days remaining), mark notified as true
             if (interval < 4) {
-              item.notified = true;
+              if(!item.notified){
+                item.notified = true;
+              }
             }
 
             await item.save(); // Save the updated item with the new state
