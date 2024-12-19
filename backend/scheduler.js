@@ -16,7 +16,7 @@ const sendExpiryNotification = async (item, user, interval) => {
 const checkExpiringItems = async () => {
   try {
     const now = new Date();
-    const intervals = [15, 7, 2, 1];
+    const defaultIntervals = [15, 7, 3, 2, 1];
 
     const expiringItems = await Item.find({
       expiryDate: { $gte: now },
@@ -30,6 +30,10 @@ const checkExpiringItems = async () => {
         const timeRemaining = Math.floor((item.expiryDate - now) / (1000 * 60 * 60 * 24)); // Remaining days
         console.log(`${item.name} time reaming to expire is: ${timeRemaining}`);
 
+        const intervals = item.userNotifyIntervals.length > 0 ? item.userNotifyIntervals : defaultIntervals;
+
+        console.log("Intervals: ", intervals);
+        
         // Check if the remaining days match any of the intervals
         for (const interval of intervals) {
           if (timeRemaining === interval && !item.notifiedIntervals.includes(interval)) {

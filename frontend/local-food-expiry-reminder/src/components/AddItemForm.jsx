@@ -6,17 +6,29 @@ const AddItemForm = ({ setItems, setLoading, closeModal }) => {
   const [itemName, setItemName] = useState("");
   const [itemExpiryDate, setItemExpiryDate] = useState("");
   const [addItemError, setAddItemError] = useState("");
+  const [notifyIntervals, setNotifyIntervals] = useState("");
+  const [userNotifyIntervals, setUserNotifyIntervals] = useState([]);
+  const [intervalError, setIntervalError] = useState("");
 
-  const testExpiryDate = new Date();
-  testExpiryDate.setMinutes(testExpiryDate.getMinutes() + 5);
   const handleAddItem = async (e) => {
     e.preventDefault();
+
+    if (!validateIntervals()) {
+      return;
+    }
     try {
       const formattedExpiryDate = new Date(itemExpiryDate);
       formattedExpiryDate.setHours(0, 0, 0, 0);
+
+      const intervals = notifyIntervals
+        .split(",")
+        .map(interval => parseInt(interval.trim()))
+        .filter(interval => !isNaN(interval));
+
       const res = await axiosClient.post("/api/items/addItem", {
         name: itemName,
         expiryDate: itemExpiryDate,
+        userNotifyIntervals: intervals
       });
       toast.success("Item added successfully!");
       // console.log("Item added", res.data?.data);
@@ -26,6 +38,8 @@ const AddItemForm = ({ setItems, setLoading, closeModal }) => {
       // Reset form inputs
       setItemName("");
       setItemExpiryDate("");
+      setNotifyIntervals("");
+      setUserNotifyIntervals([]);
       setAddItemError("");
       closeModal();
     } catch (error) {
@@ -36,6 +50,47 @@ const AddItemForm = ({ setItems, setLoading, closeModal }) => {
       setLoading(false);
     }
   };
+
+  const handleIntervalChange = (e) => {
+    setNotifyIntervals(e.target.value);
+  };
+
+  const validateIntervals = () => {
+    const now = new Date();
+    const expiryDate = new Date(itemExpiryDate);
+
+    // Validate the format: Check if each interval is an integer
+    const intervals = notifyIntervals
+      .split(",")
+      .map((interval) => parseInt(interval.trim()))
+      .filter((interval) => !isNaN(interval));
+
+    if (intervals.length === 0) {
+      setIntervalError("Please enter valid intervals (e.g., 14, 7, 2, 1).");
+      return false;
+    }
+
+    // Validate each interval (must be a positive integer, within the range)
+    for (const interval of intervals) {
+      if (interval <= 0) {
+        setIntervalError("Intervals must be positive integers.");
+        return false;
+      }
+
+      // Check if the notification date is before the expiry date and after today's date
+      const notificationDate = new Date(expiryDate.getTime() - interval * 24 * 60 * 60 * 1000);
+      if (notificationDate <= now || notificationDate >= expiryDate) {
+        setIntervalError("Each interval must be between today and the expiry date.");
+        return false;
+      }
+    }
+
+    // Clear error if intervals are valid
+    setIntervalError("");
+    return true;
+  };
+
+
   return (
     <form
       onSubmit={handleAddItem}
@@ -75,6 +130,27 @@ const AddItemForm = ({ setItems, setLoading, closeModal }) => {
           onChange={(e) => setItemExpiryDate(e.target.value)}
           className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
         />
+      </div>
+    {/* Notify Intervals */}
+      <div>
+        <label
+          htmlFor="notifyIntervals"
+          className="block text-sm font-medium text-gray-600"
+        >
+          Notification Intervals (in days, comma-separated)
+        </label>
+        <input
+          id="notifyIntervals"
+          type="text"
+          placeholder="Give intervals (e.g., 14, 7, 2, 1)"
+          value={notifyIntervals}
+          onChange={handleIntervalChange}
+          className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+        />
+        {intervalError && (
+          <p className="text-red-500 text-sm font-semibold mt-2">{intervalError}</p>
+        )}
+
       </div>
 
       {/* Error Message */}
