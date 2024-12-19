@@ -9,11 +9,13 @@ const AddItemForm = ({ setItems, setLoading, closeModal }) => {
   const [notifyIntervals, setNotifyIntervals] = useState("");
   const [userNotifyIntervals, setUserNotifyIntervals] = useState([]);
   const [intervalError, setIntervalError] = useState("");
+  const [itemNameError, setItemNameError] = useState("");
+  const [itemExpiryError, setItemExpiryError] = useState("");
 
   const handleAddItem = async (e) => {
     e.preventDefault();
 
-    if (!validateIntervals()) {
+    if (!isValid()) {
       return;
     }
     try {
@@ -22,13 +24,13 @@ const AddItemForm = ({ setItems, setLoading, closeModal }) => {
 
       const intervals = notifyIntervals
         .split(",")
-        .map(interval => parseInt(interval.trim()))
-        .filter(interval => !isNaN(interval));
+        .map((interval) => parseInt(interval.trim()))
+        .filter((interval) => !isNaN(interval));
 
       const res = await axiosClient.post("/api/items/addItem", {
         name: itemName,
         expiryDate: itemExpiryDate,
-        userNotifyIntervals: intervals
+        userNotifyIntervals: intervals,
       });
       toast.success("Item added successfully!");
       // console.log("Item added", res.data?.data);
@@ -55,7 +57,35 @@ const AddItemForm = ({ setItems, setLoading, closeModal }) => {
     setNotifyIntervals(e.target.value);
   };
 
-  const validateIntervals = () => {
+  const isValid = () => {
+    let isValid = true;
+
+    // Validate Item Name
+    if (itemName.trim().length < 1) {
+      setItemNameError("Name can't be empty");
+      isValid = false;
+    } else {
+      setItemNameError(""); // Clear error if valid
+    }
+
+    // Validate Expiry Date
+    if (itemExpiryDate.length < 1) {
+      setItemExpiryError("Expiry Date can't be empty");
+      isValid = false;
+    } else {
+      const today = new Date();
+      const expiryDate = new Date(itemExpiryDate);
+
+      // Check if expiry date is in the past
+      if (expiryDate < today) {
+        setItemExpiryError("Expiry date can't be in the past");
+        isValid = false;
+      } else {
+        setItemExpiryError(""); // Clear error if valid
+      }
+    }
+
+    // Validate Notify Intervals
     const now = new Date();
     const expiryDate = new Date(itemExpiryDate);
 
@@ -67,29 +97,34 @@ const AddItemForm = ({ setItems, setLoading, closeModal }) => {
 
     if (intervals.length === 0) {
       setIntervalError("Please enter valid intervals (e.g., 14, 7, 2, 1).");
-      return false;
+      isValid = false;
+    } else {
+      setIntervalError(""); // Clear error if valid
     }
 
     // Validate each interval (must be a positive integer, within the range)
     for (const interval of intervals) {
       if (interval <= 0) {
         setIntervalError("Intervals must be positive integers.");
-        return false;
+        isValid = false;
+        break;
       }
 
       // Check if the notification date is before the expiry date and after today's date
-      const notificationDate = new Date(expiryDate.getTime() - interval * 24 * 60 * 60 * 1000);
+      const notificationDate = new Date(
+        expiryDate.getTime() - interval * 24 * 60 * 60 * 1000
+      );
       if (notificationDate <= now || notificationDate >= expiryDate) {
-        setIntervalError("Each interval must be between today and the expiry date.");
-        return false;
+        setIntervalError(
+          "Each interval must be between today and the expiry date."
+        );
+        isValid = false;
+        break;
       }
     }
 
-    // Clear error if intervals are valid
-    setIntervalError("");
-    return true;
+    return isValid;
   };
-
 
   return (
     <form
@@ -112,6 +147,11 @@ const AddItemForm = ({ setItems, setLoading, closeModal }) => {
           onChange={(e) => setItemName(e.target.value)}
           className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
         />
+        {itemNameError && (
+          <p className="text-red-500 text-sm font-semibold mt-2">
+            {itemNameError}
+          </p>
+        )}
       </div>
 
       {/* Expiry Date Input */}
@@ -130,8 +170,13 @@ const AddItemForm = ({ setItems, setLoading, closeModal }) => {
           onChange={(e) => setItemExpiryDate(e.target.value)}
           className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
         />
+        {itemExpiryError && (
+          <p className="text-red-500 text-sm font-semibold mt-2">
+            {itemExpiryError}
+          </p>
+        )}
       </div>
-    {/* Notify Intervals */}
+      {/* Notify Intervals */}
       <div>
         <label
           htmlFor="notifyIntervals"
@@ -148,9 +193,10 @@ const AddItemForm = ({ setItems, setLoading, closeModal }) => {
           className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
         />
         {intervalError && (
-          <p className="text-red-500 text-sm font-semibold mt-2">{intervalError}</p>
+          <p className="text-red-500 text-sm font-semibold mt-2">
+            {intervalError}
+          </p>
         )}
-
       </div>
 
       {/* Error Message */}
