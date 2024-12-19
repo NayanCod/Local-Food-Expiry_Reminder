@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 const AddItemForm = ({ setItems, setLoading, closeModal }) => {
   const [itemName, setItemName] = useState("");
-  const [itemExpiryDate, setItemExpiryDate] = useState(null);
+  const [itemExpiryDate, setItemExpiryDate] = useState("");
   const [addItemError, setAddItemError] = useState("");
 
   const testExpiryDate = new Date();

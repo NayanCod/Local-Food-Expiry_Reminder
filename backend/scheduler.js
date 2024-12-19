@@ -3,7 +3,6 @@ const Item = require("./model/Item.js");
 const User = require("./model/User.js");
 const admin = require("./firebase.js");
 
-// Function to send notification
 const sendExpiryNotification = async (item, user, interval) => {
   await admin.messaging().send({
     token: user.fcmToken,
@@ -14,21 +13,17 @@ const sendExpiryNotification = async (item, user, interval) => {
   });
 };
 
-// Function to check expiring items
 const checkExpiringItems = async () => {
   try {
     const now = new Date();
-    const intervals = [15, 7, 2, 1]; // Original intervals
+    const intervals = [15, 7, 2, 1];
 
-    // Find items that are yet to expire, and haven't been fully notified
     const expiringItems = await Item.find({
       expiryDate: { $gte: now },
-      // notified: false, // Only consider items that haven't been fully notified
     });
 
     console.log("Items that don't expire yet:", expiringItems);
 
-    // Loop through each item and check expiry intervals
     for (const item of expiringItems) {
       const user = await User.findById(item.user);
       if (user && user.fcmToken) {
@@ -51,8 +46,9 @@ const checkExpiringItems = async () => {
               }
             }
 
-            await item.save(); // Save the updated item with the new state
-            break; // Stop processing after sending a notification for this interval
+            // Save the updated item with the new state
+            await item.save(); 
+            break;
           }
         }
       }
