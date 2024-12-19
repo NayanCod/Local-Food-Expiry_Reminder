@@ -25,14 +25,6 @@ const Tabs = ({ activeTab, setActiveTab }) => {
         Fresh
       </button>
       <button
-        onClick={() => setActiveTab("Expired")}
-        className={`${getTabClass("Expired")} ${
-          activeTab === "Expired" ? "bg-red-500 text-white" : "bg-gray-200"
-        }`}
-      >
-        Expired
-      </button>
-      <button
         onClick={() => setActiveTab("Expiring")}
         className={`${getTabClass("Expiring")} ${
           activeTab === "Expiring"
@@ -41,6 +33,14 @@ const Tabs = ({ activeTab, setActiveTab }) => {
         }`}
       >
         Expiring
+      </button>
+      <button
+        onClick={() => setActiveTab("Expired")}
+        className={`${getTabClass("Expired")} ${
+          activeTab === "Expired" ? "bg-red-500 text-white" : "bg-gray-200"
+        }`}
+      >
+        Expired
       </button>
     </div>
   );
