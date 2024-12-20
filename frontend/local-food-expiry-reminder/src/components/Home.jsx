@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { getToken } from "firebase/messaging";
 import { onMessage } from "firebase/messaging";
 import { messaging } from "../firebase.js";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axiosClient from "../../axiosConfig.js";
@@ -11,11 +10,11 @@ import FreshItems from "./FreshItems.jsx";
 import ExpiredItems from "./ExpiredItems.jsx";
 import Notifications from "./Notifications.jsx";
 import FixedModal from "./FixedModal.jsx";
-import AddItemForm from "./AddItemForm.jsx";
 import WarningDialog from "./WarningDialog.jsx";
 import Tabs from "./Tabs.jsx";
 import Logo from "./Logo.jsx";
 import AboutToExpiredItems from "./AboutToExpiredItems.jsx";
+import ItemActionForm from "./ItemActionForm.jsx";
 
 function Home() {
   const [items, setItems] = useState();
@@ -193,7 +192,7 @@ function Home() {
             <Logo />
             <div className="flex gap-4 items-center">
               <FixedModal heading="Add Item" button="Add Item">
-                <AddItemForm onSubmit={async (payload) => {
+                <ItemActionForm onSubmit={async (payload) => {
                   await axiosClient.post(`/api/items/addItem`, payload); // Edit API call
                   fetchItems(); // Refresh items after update
                 }}/>

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axiosClient from "../../axiosConfig";
 import { toast } from "react-toastify";
 
-const AddItemForm = ({
+const ItemActionForm = ({
   itemData = null, // Pass item data if editing
   onSubmit, // Callback for form submission
   closeModal,
@@ -178,4 +178,4 @@ const AddItemForm = ({
   );
 };
 
-export default AddItemForm;
+export default ItemActionForm;

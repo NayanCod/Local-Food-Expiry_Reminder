@@ -2,11 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import axiosClient from "../../axiosConfig";
 import FixedModal from "./FixedModal";
-import AddItemForm from "./AddItemForm";
+import ItemActionForm from "./ItemActionForm";
 
 const ItemCard = ({ item, fetchItems }) => {
   const [showMenu, setShowMenu] = useState(false);
-  const [showEditForm, setShowEditForm] = useState(false);
   const [hover, setHover] = useState(false);
   const menuRef = useRef(null);
 
@@ -93,7 +92,7 @@ const ItemCard = ({ item, fetchItems }) => {
               button="Edit"
               btnClass="font-semibold text-left text-xs text-gray-800 hover:text-gray-600"
             >
-              <AddItemForm
+              <ItemActionForm
                 itemData={item} // Pass current item data for editing
                 onSubmit={async (updatedItem) => {
                   await axiosClient.put(`/api/items/${item._id}`, updatedItem); // Edit API call
