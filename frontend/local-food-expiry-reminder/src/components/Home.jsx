@@ -22,11 +22,9 @@ function Home() {
   const [notifications, setNotifications] = useState();
   const [loading, setLoading] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
-  const [allItem, setAllItem] = useState(true);
-  const [expiredItem, setExpiredItem] = useState(false);
-  const [freshItem, setFreshItem] = useState(false);
   const [activeTab, setActiveTab] = useState("All");
   const [showMenu, setShowMenu] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const notificationRef = useRef(null);
   const alertIconRef = useRef(null);
@@ -109,7 +107,7 @@ function Home() {
     fetchItems();
     fetchNotifications();
 
-    const beepSound = new Audio('/notificationBeep.mp3');
+    const beepSound = new Audio("/notificationBeep.mp3");
 
     const unsubscribe = onMessage(messaging, async (payload) => {
       console.log("foregournd message recieved", payload);
@@ -117,7 +115,9 @@ function Home() {
       const { title, body } = payload.notification || {};
       toast.info(`📢 ${title}: ${body}`);
 
-      beepSound.play().catch(error => console.error("Failed to play beep sound:", error));
+      beepSound
+        .play()
+        .catch((error) => console.error("Failed to play beep sound:", error));
 
       try {
         await axiosClient.post("/api/notification", {
@@ -168,7 +168,7 @@ function Home() {
         <div className="h-screen flex flex-col overflow-y-auto hide-scroll">
           <ToastContainer />
           <div className="fixed top-0 bg-white shadow-md shadow-gray-200 w-full flex justify-between px-8 py-3 items-center">
-            <Logo/>
+            <Logo />
             <div className="flex gap-4 items-center">
               <FixedModal heading="Add Item" button="Add Item">
                 <AddItemForm setItems={setItems} setLoading={setLoading} />
@@ -236,9 +236,34 @@ function Home() {
             </div>
           </div>
           <div className="flex-grow">
-            <h1 className="ml-6 mt-20 text-3xl text-blue-600 font-semibold font-sans my-6">
-              Your Items
-            </h1>
+            <div className="flex justify-between items-center">
+              <h1 className="ml-6 mt-20 text-3xl text-blue-600 font-semibold font-sans my-6">
+                Your Items
+              </h1>
+              <div className="relative mr-6 mt-20 my-6 w-60">
+                <input
+                  type="text"
+                  placeholder="Search items"
+                  className="w-full rounded-full pl-4 pr-10 py-1.5 outline-none border border-black text-sm placeholder:text-sm focus:shadow-md"
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  className="w-4 h-4 absolute right-4 top-2 text-green-700"
+                  onChange={(e) => setSearchText(e.target.value)}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                  />
+                </svg>
+              </div>
+            </div>
+
             <Tabs activeTab={activeTab} setActiveTab={handleTabChange} />
 
             {items.length === 0 ? (
