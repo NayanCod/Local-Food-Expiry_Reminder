@@ -29,6 +29,7 @@ function Home() {
   const [filteredItems, setFilteredItems] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchLoad, setSearchLoad] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const notificationRef = useRef(null);
   const alertIconRef = useRef(null);
@@ -188,10 +189,10 @@ function Home() {
       <>
         <div className="h-screen flex flex-col overflow-y-auto hide-scroll">
           <ToastContainer />
-          <div className="fixed top-0 bg-white shadow-md shadow-gray-200 w-full flex justify-between px-8 py-3 items-center">
+          <div className={`fixed top-0  ${isDarkMode ? 'bg-gray-800 text-white shadow-gray-700 transition-all duration-300' : 'bg-white text-gray-800 shadow-gray-200 transition-all duration-300'} shadow-md w-full flex justify-between px-4 md:px-8 py-3 items-center`}>
             <Logo />
             <div className="flex gap-4 items-center">
-              <FixedModal heading="Add Item" button="Add Item">
+              <FixedModal heading="Add Item" button="Add Item" btnClass={`${isDarkMode ? 'text-white hover:text-green-500' : 'text-gray-800 hover:text-green-500'}`}>
                 <ItemActionForm
                   onSubmit={async (payload) => {
                     await axiosClient.post(`/api/items/addItem`, payload); // Edit API call
@@ -199,6 +200,22 @@ function Home() {
                   }}
                 />
               </FixedModal>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill={isDarkMode ? 'white' : 'none'}
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-5 h-5 hover:text-green-500 cursor-pointer"
+                onClick={() => setIsDarkMode(!isDarkMode)}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+                />
+              </svg>
+
               <div className="relative cursor-pointer" ref={alertIconRef}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -261,16 +278,16 @@ function Home() {
               )}
             </div>
           </div>
-          <div className="flex-grow">
-            <div className="flex justify-between items-center">
-              <h1 className="ml-6 mt-20 text-3xl text-blue-600 font-semibold font-sans my-6">
+          <div className={`flex-grow ${isDarkMode ? 'bg-gray-800 text-white transition-all duration-300' : 'bg-white text-gray-800 transition-all duration-300'}`}>
+            <div className="flex justify-between items-cente">
+              <h1 className="ml-6 mt-20 text-2xl md:text-3xl text-blue-600 font-semibold font-sans my-6">
                 Your Items
               </h1>
-              <div className="flex items-center justify-between pl-4 pr-4 py-1.5 mr-6 mt-20 my-6 w-60 border border-black rounded-full">
+              <div className={`flex items-center justify-between pl-4 pr-4 py-1.5 mr-6 mt-20 my-6 w-60 border rounded-full ${isDarkMode ? 'border-white' : 'border-gray-800'}`}>
                 <input
                   type="text"
                   placeholder="Search items"
-                  className="outline-none text-sm placeholder:text-sm"
+                  className={`outline-none text-sm placeholder:text-sm ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}
                   value={searchText}
                   onChange={handleSearchChange}
                 />
@@ -303,7 +320,10 @@ function Home() {
                     strokeWidth="1.5"
                     stroke="currentColor"
                     className="w-4 h-4 text-green-700 hover:text-green-900 hover:cursor-pointer"
-                    onClick={() => {setSearchText(""); setFilteredItems(items);}}
+                    onClick={() => {
+                      setSearchText("");
+                      setFilteredItems(items);
+                    }}
                   >
                     <path
                       strokeLinecap="round"
