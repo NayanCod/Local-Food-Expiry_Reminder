@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useDarkMode } from "../context/DarkModeContext";
 
 const FixedModal = ({ heading, button, children, btnClass }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const {isDarkMode} = useDarkMode();
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
@@ -35,7 +37,7 @@ const FixedModal = ({ heading, button, children, btnClass }) => {
           onClick={closeModal} 
         >
           <div
-            className="bg-white rounded-lg shadow-lg w-11/12 sm:w-1/2 max-w-lg p-6 relative"
+            className={`rounded-lg shadow-lg w-11/12 sm:w-1/2 max-w-lg p-6 relative ${isDarkMode ? 'bg-gray-800 text-white transition-all duration-300' : 'bg-white text-gray-800 transition-all duration-300'}`}
             onClick={(e) => e.stopPropagation()} 
           >
             {/* Modal Header */}

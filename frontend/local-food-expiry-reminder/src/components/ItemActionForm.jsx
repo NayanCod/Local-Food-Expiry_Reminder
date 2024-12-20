@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import axiosClient from "../../axiosConfig";
 import { toast } from "react-toastify";
+import { useDarkMode } from "../context/DarkModeContext";
 
 const ItemActionForm = ({
   itemData = null, // Pass item data if editing
   onSubmit, // Callback for form submission
   closeModal,
 }) => {
+  const {isDarkMode} = useDarkMode();
   const [itemName, setItemName] = useState(itemData?.name || "");
   const [itemExpiryDate, setItemExpiryDate] = useState(
     itemData?.expiryDate || ""
@@ -101,14 +103,14 @@ const ItemActionForm = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-lg p-6 bg-white max-w-md mx-auto space-y-4"
+      className={`rounded-lg p-6 max-w-md mx-auto space-y-4 ${isDarkMode ? 'bg-gray-800 text-white transition-all duration-300': 'bg-white text-gray-800 transition-all duration-300'}`}
     >
       <div>
         <label
           htmlFor="itemName"
-          className="block text-sm font-medium text-gray-600"
+          className={`block text-sm font-medium ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
         >
-          Item Name
+          Item Name <span className="text-red-500">*</span>
         </label>
         <input
           id="itemName"
@@ -116,7 +118,7 @@ const ItemActionForm = ({
           placeholder="Enter item name"
           value={itemName}
           onChange={(e) => setItemName(e.target.value)}
-          className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          className={`mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm ${isDarkMode ? 'bg-gray-800 transition-all duration-300' : 'bg-white transition-all duration-300'}`}
         />
         {itemNameError && (
           <p className="text-red-500 text-sm font-semibold mt-2">
@@ -128,16 +130,16 @@ const ItemActionForm = ({
       <div>
         <label
           htmlFor="itemExpiryDate"
-          className="block text-sm font-medium text-gray-600"
+          className={`block text-sm font-medium ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
         >
-          Expiry Date
+          Expiry Date <span className="text-red-500">*</span>
         </label>
         <input
           id="itemExpiryDate"
           type="date"
           value={itemExpiryDate}
           onChange={(e) => setItemExpiryDate(e.target.value)}
-          className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          className={`mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm ${isDarkMode ? 'bg-gray-800 transition-all duration-300' : 'bg-white transition-all duration-300'}`}
         />
         {itemExpiryError && (
           <p className="text-red-500 text-sm font-semibold mt-2">
@@ -149,7 +151,7 @@ const ItemActionForm = ({
       <div>
         <label
           htmlFor="notifyIntervals"
-          className="block text-sm font-medium text-gray-600"
+          className={`block text-sm font-medium ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
         >
           Notification Intervals (comma-separated days)
         </label>
@@ -159,7 +161,7 @@ const ItemActionForm = ({
           placeholder="Give intervals (e.g., 14, 7, 2, 1)"
           value={notifyIntervals}
           onChange={(e) => setNotifyIntervals(e.target.value)}
-          className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          className={`mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm ${isDarkMode ? 'bg-gray-800 transition-all duration-300' : 'bg-white transition-all duration-300'}`}
         />
         {intervalError && (
           <p className="text-red-500 text-sm font-semibold mt-2">
