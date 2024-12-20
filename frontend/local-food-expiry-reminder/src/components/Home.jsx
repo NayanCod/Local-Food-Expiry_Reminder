@@ -74,8 +74,6 @@ function Home() {
 
       setItems(res.data?.data);
       setFilteredItems(res.data?.data);
-      console.log(items);
-      console.log(filteredItems);
       setLoading(false);
     } catch (error) {
       // console.log("Error fetching items: ", error);
@@ -195,7 +193,10 @@ function Home() {
             <Logo />
             <div className="flex gap-4 items-center">
               <FixedModal heading="Add Item" button="Add Item">
-                <AddItemForm setItems={setItems} setLoading={setLoading} />
+                <AddItemForm onSubmit={async (payload) => {
+                  await axiosClient.post(`/api/items/addItem`, payload); // Edit API call
+                  fetchItems(); // Refresh items after update
+                }}/>
               </FixedModal>
               <div className="relative cursor-pointer" ref={alertIconRef}>
                 <svg

@@ -27,6 +27,37 @@ exports.getItems = async (req, res) => {
   }
 };
 
+// Update Item
+exports.updateItem = async (req, res) => {
+  try {
+    const user = req.user.id;
+    const { id } = req.params; 
+    const { name, expiryDate, userNotifyIntervals } = req.body; 
+
+    if (!user) {
+      return res.status(401).send("Unauthorized: User not found!");
+    }
+
+    const item = await Item.findOne({ user: user, _id: id });
+
+    if (!item) {
+      return res.status(404).send("Item not found or unauthorized to update.");
+    }
+
+    if (name) item.name = name;
+    if (expiryDate) item.expiryDate = expiryDate;
+    if (userNotifyIntervals) item.userNotifyIntervals = userNotifyIntervals;
+
+    await item.save(); 
+
+    res.status(200).json({ message: "Item successfully updated.", data: item });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+
+// Delete Item
 exports.deleteItem = async (req, res) => {
   try {
     const user = req.user.id; 

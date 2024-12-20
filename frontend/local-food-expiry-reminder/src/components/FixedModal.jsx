@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const FixedModal = ({ heading, button, children }) => {
+const FixedModal = ({ heading, button, children, btnClass }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => setIsOpen(true);
@@ -23,7 +23,7 @@ const FixedModal = ({ heading, button, children }) => {
       {/* Button to open the modal */}
       <button
         onClick={openModal}
-        className=" text-gray-800 font-medium rounded hover:text-green-600"
+        className={btnClass ? btnClass : 'text-gray-800 font-medium rounded hover:text-green-600'}
       >
         {button}
       </button>

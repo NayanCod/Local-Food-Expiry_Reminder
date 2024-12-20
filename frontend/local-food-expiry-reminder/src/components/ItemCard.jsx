@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import axiosClient from "../../axiosConfig";
+import FixedModal from "./FixedModal";
+import AddItemForm from "./AddItemForm";
 
 const ItemCard = ({ item, fetchItems }) => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
   const [hover, setHover] = useState(false);
   const menuRef = useRef(null);
 
@@ -84,12 +87,28 @@ const ItemCard = ({ item, fetchItems }) => {
         )}
 
         {hover && showMenu && (
-          <button
-            onClick={() => handleDelete(item._id)}
-            className="bg-white border-1 border-gray-600 rounded-md px-4 py-1 font-semibold text-left text-xs text-gray-800 hover:bg-gray-50"
-          >
-            Delete
-          </button>
+          <div className="flex gap-4 mx-3">
+            <FixedModal
+              heading="Edit Item"
+              button="Edit"
+              btnClass="font-semibold text-left text-xs text-gray-800 hover:text-gray-600"
+            >
+              <AddItemForm
+                itemData={item} // Pass current item data for editing
+                onSubmit={async (updatedItem) => {
+                  await axiosClient.put(`/api/items/${item._id}`, updatedItem); // Edit API call
+                  fetchItems(); // Refresh items after update
+                }}
+                // closeModal={closeModal} // Function to close modal
+              />
+            </FixedModal>
+            <button
+              onClick={() => handleDelete(item._id)}
+              className="font-semibold text-left text-xs text-gray-800 hover:text-gray-600"
+            >
+              Delete
+            </button>
+          </div>
         )}
       </div>
 
