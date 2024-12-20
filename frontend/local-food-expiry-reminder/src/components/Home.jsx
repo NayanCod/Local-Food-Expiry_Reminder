@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useDarkMode } from "../context/DarkModeContext.jsx";
 import { getToken } from "firebase/messaging";
 import { onMessage } from "firebase/messaging";
 import { messaging } from "../firebase.js";
@@ -17,6 +18,7 @@ import AboutToExpiredItems from "./AboutToExpiredItems.jsx";
 import ItemActionForm from "./ItemActionForm.jsx";
 
 function Home() {
+  const {isDarkMode, toggleDarkMode} = useDarkMode();
   const [items, setItems] = useState();
   const [notifications, setNotifications] = useState();
   const [loading, setLoading] = useState(true);
@@ -29,7 +31,6 @@ function Home() {
   const [filteredItems, setFilteredItems] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchLoad, setSearchLoad] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const notificationRef = useRef(null);
   const alertIconRef = useRef(null);
@@ -207,7 +208,7 @@ function Home() {
                 strokeWidth="1.5"
                 stroke="currentColor"
                 className="w-5 h-5 hover:text-green-500 cursor-pointer"
-                onClick={() => setIsDarkMode(!isDarkMode)}
+                onClick={toggleDarkMode}
               >
                 <path
                   strokeLinecap="round"
@@ -287,14 +288,14 @@ function Home() {
                 <input
                   type="text"
                   placeholder="Search items"
-                  className={`outline-none text-sm placeholder:text-sm ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}
+                  className={`outline-none text-sm placeholder:text-sm ${isDarkMode ? 'bg-gray-800 transition-all duration-300' : 'bg-white transition-all duration-300'}`}
                   value={searchText}
                   onChange={handleSearchChange}
                 />
                 {searchLoad ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 h-4 text-green-700 animate-spin"
+                    className={`w-4 h-4 animate-spin ${isDarkMode ? 'text-green-500 transition-all duration-300' : 'text-green-700 transition-all duration-300'}`}
                     fill="none"
                     viewBox="0 0 24 24"
                   >
@@ -319,7 +320,7 @@ function Home() {
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
                     stroke="currentColor"
-                    className="w-4 h-4 text-green-700 hover:text-green-900 hover:cursor-pointer"
+                    className={`w-4 h-4 hover:text-green-900 hover:cursor-pointer ${isDarkMode ? 'text-green-500 transition-all duration-300' : 'text-green-700 transition-all duration-300'}`}
                     onClick={() => {
                       setSearchText("");
                       setFilteredItems(items);
@@ -338,7 +339,7 @@ function Home() {
                     viewBox="0 0 24 24"
                     strokeWidth="2"
                     stroke="currentColor"
-                    className="w-4 h-4 text-green-700"
+                    className={`w-4 h-4 ${isDarkMode ? 'text-green-500 transition-all duration-300' : 'text-green-700 transition-all duration-300'}`}
                   >
                     <path
                       strokeLinecap="round"

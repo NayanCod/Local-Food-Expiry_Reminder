@@ -1,4 +1,8 @@
+import { useDarkMode } from "../context/DarkModeContext";
+
 const Tabs = ({ activeTab, setActiveTab }) => {
+  const {isDarkMode} = useDarkMode();
+
   const getTabClass = (tabName) =>
     `py-1 px-4 rounded-lg font-semibold cursor-pointer ${
       activeTab === tabName
@@ -7,7 +11,7 @@ const Tabs = ({ activeTab, setActiveTab }) => {
     }`;
 
   return (
-    <div className="flex pl-6 gap-4 border-b-2 border-gray-300 pb-2">
+    <div className={`flex pl-6 gap-4 border-b-2 pb-2 ${isDarkMode ? 'border-gray-700 transition-all duration-300' : 'border-gray-300 transition-all duration-300'}`}>
       <button
         onClick={() => setActiveTab("All")}
         className={`${getTabClass("All")} ${
