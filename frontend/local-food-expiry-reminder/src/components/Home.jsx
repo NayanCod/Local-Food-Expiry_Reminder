@@ -22,9 +22,14 @@ function Home() {
   const [notifications, setNotifications] = useState();
   const [loading, setLoading] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
+  const [allItem, setAllItem] = useState(true);
+  const [expiredItem, setExpiredItem] = useState(false);
+  const [freshItem, setFreshItem] = useState(false);
   const [activeTab, setActiveTab] = useState("All");
   const [showMenu, setShowMenu] = useState(false);
+  const [filteredItems, setFilteredItems] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [searchLoad, setSearchLoad] = useState(false);
 
   const notificationRef = useRef(null);
   const alertIconRef = useRef(null);
@@ -68,12 +73,31 @@ function Home() {
       // console.log("USERS ITEMS", res.data);
 
       setItems(res.data?.data);
+      setFilteredItems(res.data?.data);
+      console.log(items);
+      console.log(filteredItems);
       setLoading(false);
     } catch (error) {
       // console.log("Error fetching items: ", error);
       setLoading(false);
     }
   };
+
+  const handleSearchChange = (e) => {
+    setSearchLoad(true);
+    const searchValue = e.target.value.toLowerCase();
+    setSearchText(searchValue);
+
+    // Filter items based on the search text
+    const filtered = items.filter((item) =>
+      item.name.toLowerCase().includes(searchValue)
+    );
+    console.log(filtered);
+
+    setFilteredItems(filtered);
+    setSearchLoad(false);
+  };
+
   const fetchNotifications = async () => {
     try {
       const res = await axiosClient.get("/api/notification");
@@ -245,22 +269,46 @@ function Home() {
                   type="text"
                   placeholder="Search items"
                   className="w-full rounded-full pl-4 pr-10 py-1.5 outline-none border border-black text-sm placeholder:text-sm focus:shadow-md"
+                  value={searchText}
+                  onChange={handleSearchChange}
                 />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  stroke="currentColor"
-                  className="w-4 h-4 absolute right-4 top-2 text-green-700"
-                  onChange={(e) => setSearchText(e.target.value)}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                  />
-                </svg>
+                {searchLoad ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4 absolute right-4 top-2 text-green-700 animate-spin"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    ></path>
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    className="w-4 h-4 absolute right-4 top-2 text-green-700"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                    />
+                  </svg>
+                )}
               </div>
             </div>
 
@@ -278,16 +326,19 @@ function Home() {
             ) : (
               <div className="my-4 overflow-y-auto h-[calc(100vh-200px)] scrollable-container">
                 {activeTab === "All" && (
-                  <AllItems items={items} fetchItems={fetchItems} />
+                  <AllItems items={filteredItems} fetchItems={fetchItems} />
                 )}
                 {activeTab === "Fresh" && (
-                  <FreshItems items={items} fetchItems={fetchItems} />
+                  <FreshItems items={filteredItems} fetchItems={fetchItems} />
                 )}
                 {activeTab === "Expired" && (
-                  <ExpiredItems items={items} fetchItems={fetchItems} />
+                  <ExpiredItems items={filteredItems} fetchItems={fetchItems} />
                 )}
                 {activeTab === "Expiring" && (
-                  <AboutToExpiredItems items={items} fetchItems={fetchItems} />
+                  <AboutToExpiredItems
+                    items={filteredItems}
+                    fetchItems={fetchItems}
+                  />
                 )}
               </div>
             )}
