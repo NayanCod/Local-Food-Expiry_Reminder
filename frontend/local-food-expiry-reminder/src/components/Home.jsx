@@ -264,18 +264,18 @@ function Home() {
               <h1 className="ml-6 mt-20 text-3xl text-blue-600 font-semibold font-sans my-6">
                 Your Items
               </h1>
-              <div className="relative mr-6 mt-20 my-6 w-60">
+              <div className="flex items-center justify-between pl-4 pr-4 py-1.5 mr-6 mt-20 my-6 w-60 border border-black rounded-full">
                 <input
                   type="text"
                   placeholder="Search items"
-                  className="w-full rounded-full pl-4 pr-10 py-1.5 outline-none border border-black text-sm placeholder:text-sm focus:shadow-md"
+                  className="outline-none text-sm placeholder:text-sm"
                   value={searchText}
                   onChange={handleSearchChange}
                 />
                 {searchLoad ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-4 h-4 absolute right-4 top-2 text-green-700 animate-spin"
+                    className="w-4 h-4 text-green-700 animate-spin"
                     fill="none"
                     viewBox="0 0 24 24"
                   >
@@ -300,7 +300,7 @@ function Home() {
                     viewBox="0 0 24 24"
                     strokeWidth="2"
                     stroke="currentColor"
-                    className="w-4 h-4 absolute right-4 top-2 text-green-700"
+                    className="w-4 h-4 text-green-700"
                   >
                     <path
                       strokeLinecap="round"

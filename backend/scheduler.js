@@ -45,7 +45,7 @@ const checkExpiringItems = async () => {
             console.log("Expired intervals: ", item.notifiedIntervals)
 
             // If it's the third notification (4 days remaining), mark notified as true
-            if (interval < 4) {
+            if (interval <= 4) {
               if(!item.notified){
                 item.notified = true;
               }
