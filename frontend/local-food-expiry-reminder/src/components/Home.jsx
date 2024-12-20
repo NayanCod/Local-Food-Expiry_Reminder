@@ -220,6 +220,7 @@ function Home() {
               <div className="relative cursor-pointer" ref={alertIconRef}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
+                  // fill={`${showAlert ? 'black' : 'none'}`}
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
@@ -267,7 +268,7 @@ function Home() {
               {showMenu && (
                 <div
                   ref={accountRef}
-                  className="absolute w-30 top-16 right-3 p-3 border-1 border-gray-300 flex flex-col gap-3 shadow-md bg-gray-50 rounded-lg z-20"
+                  className={`absolute w-30 top-16 right-3 p-3 border-1 border-gray-300 flex flex-col gap-3 shadow-md rounded-lg z-20 ${isDarkMode ? 'bg-gray-600 transition-all duration-300' : 'bg-gray-50 transition-all duration-300'}`}
                 >
                   <WarningDialog
                     heading="Are you sure, You want to logout ?"
@@ -355,10 +356,10 @@ function Home() {
 
             {items.length === 0 ? (
               <div className="w-full h-[calc(100vh-300px)] flex flex-col justify-center items-center my-4">
-                <div className="text-gray-800 text-3xl font-bold">
+                <div className={`text-3xl font-bold ${isDarkMode ? 'text-gray-200' : 'text-gray-500'}`}>
                   Looks like there is no item
                 </div>
-                <div className="text-gray-500 text-lg">
+                <div className={`text-lg ${isDarkMode ? 'text-gray-100' : 'text-gray-500'}`}>
                   Add some to keep track of their expiry
                 </div>
               </div>

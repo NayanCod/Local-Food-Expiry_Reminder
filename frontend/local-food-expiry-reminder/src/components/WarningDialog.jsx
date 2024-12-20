@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
+import { useDarkMode } from "../context/DarkModeContext";
 
 const WarningDialog = ({ heading, accept, button, children }) => {
+  const {isDarkMode} = useDarkMode();
   const [isOpen, setIsOpen] = React.useState(false);
 
   const openDialog = () => setIsOpen(true);
@@ -28,7 +30,7 @@ const WarningDialog = ({ heading, accept, button, children }) => {
       {/* Button to Open Dialog */}
       <button
         onClick={openDialog}
-        className="px-4 py-1 bg-red-500 text-white font-medium rounded hover:bg-red-600"
+        className="px-4 py-1 bg-red-500 text-white font-medium text-sm rounded hover:bg-red-600"
       >
         {children}
       </button>
@@ -36,11 +38,11 @@ const WarningDialog = ({ heading, accept, button, children }) => {
       {/* Modal */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+          className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 ${isDarkMode ? 'bg-opacity-80 transition-all duration-300' : 'bg-opacity-60 transition-all duration-300'}`}
           onClick={closeDialog}
         >
           <div
-            className="relative bg-white rounded-lg shadow-lg w-11/12 sm:w-1/2 max-w-md p-6"
+            className={`relative rounded-lg shadow-lg w-11/12 sm:w-1/2 max-w-md p-6 ${isDarkMode ? 'bg-gray-700 transition-all duration-300' : 'bg-white transition-all duration-300'}`}
             onClick={(e) => e.stopPropagation()}
           >
           <button
@@ -80,7 +82,7 @@ const WarningDialog = ({ heading, accept, button, children }) => {
               </button>
               <button
                 onClick={handleAccept}
-                className="w-1/2 px-4 py-2 border-2 border-gray-800 text-gray-800 font-medium rounded hover:bg-gray-100"
+                className={`w-1/2 px-4 py-2 border-2 font-medium rounded ${isDarkMode ? 'border-gray-200 text-gray-200 hover:bg-gray-700 transition-all duration-300' : 'border-gray-800 text-gray-800 hover:bg-gray-100 transition-all duration-300'}`}
               >
                 Yes, I'm sure
               </button>

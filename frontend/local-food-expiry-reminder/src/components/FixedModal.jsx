@@ -33,7 +33,7 @@ const FixedModal = ({ heading, button, children, btnClass }) => {
       {/* Modal */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+          className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 ${isDarkMode ? 'bg-opacity-80 transition-all duration-300' : 'bg-opacity-60 transition-all duration-300'}`}
           onClick={closeModal} 
         >
           <div

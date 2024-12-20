@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axiosClient from "../../axiosConfig";
+import { useDarkMode } from "../context/DarkModeContext";
 
 const AllNotifications = ({ notifies, fetchNotifications }) => {
+  const {isDarkMode} = useDarkMode();
   const [hoveredNotification, setHoveredNotification] = useState(false);
 
   const handleReadNotify = async (id) => {
@@ -18,7 +20,7 @@ const AllNotifications = ({ notifies, fetchNotifications }) => {
         return (
           <div
             key={notify.createdAt}
-            className="relative p-4 my-2 rounded-lg cursor-pointer bg-gray-100 hover:bg-gray-150 duration-200"
+            className={`relative p-4 my-2 rounded-lg cursor-pointer duration-200 ${isDarkMode ? 'bg-gray-500 hover:bg-gray-600 text-gray-100 transition-all duration-300' : 'bg-gray-100 text-gray-800 hover:bg-gray-150 transition-all duration-300'}`}
             onMouseEnter={() => setHoveredNotification(true)} // Set hover state on mouse enter
             onMouseLeave={() => setHoveredNotification(false)} // Reset hover state on mouse leave
           >
@@ -28,8 +30,8 @@ const AllNotifications = ({ notifies, fetchNotifications }) => {
                 ? ""
                 : notify.message.split(" ")[3]}
             </h2> */}
-            <p className="text-md text-gray-800">{notify.message}</p>
-            <p className="text-gray-500 text-sm">Recieved on: {new Date(notify.createdAt).toLocaleString()}</p>
+            <p className={`text-md ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{notify.message}</p>
+            <p className={`text-sm ${isDarkMode ? 'text-gray-100' : 'text-gray-500'}`}>Recieved on: {new Date(notify.createdAt).toLocaleString()}</p>
 
             {/* Show handleClick notification when the notification is unread or hovered */}
             {!notify.isRead && hoveredNotification && (

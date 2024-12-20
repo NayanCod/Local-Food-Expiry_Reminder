@@ -1,8 +1,10 @@
 import { useState } from "react";
 import UnreadNotification from "./UnreadNotification";
 import AllNotifications from "./AllNotifications";
+import { useDarkMode } from "../context/DarkModeContext";
 
 const Notifications = ({ notifications, fetchNotifications }) => {
+  const {isDarkMode} = useDarkMode();
   const [unreadTab, setUnreadTab] = useState(true);
   const [allAlertTab, setAllAlertTab] = useState(false);
 
@@ -12,7 +14,7 @@ const Notifications = ({ notifications, fetchNotifications }) => {
   };
 
   return (
-    <div className="absolute w-60 md:w-80 h-80 top-12 -right-12 p-3 border-1 border-gray-300 shadow-md bg-gray-50 rounded-lg z-20">
+    <div className={`absolute w-60 md:w-80 h-80 top-12 -right-12 p-3 border-1 border-gray-300 shadow-md rounded-lg z-20 ${isDarkMode ? 'bg-gray-700 text-white transition-all duration-300' : 'bg-white text-gray-800 transition-all duration-300'}`}>
       <div className="flex gap-4 w-full">
         <button
           onClick={() => {
