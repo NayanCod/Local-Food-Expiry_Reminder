@@ -192,10 +192,12 @@ function Home() {
             <Logo />
             <div className="flex gap-4 items-center">
               <FixedModal heading="Add Item" button="Add Item">
-                <ItemActionForm onSubmit={async (payload) => {
-                  await axiosClient.post(`/api/items/addItem`, payload); // Edit API call
-                  fetchItems(); // Refresh items after update
-                }}/>
+                <ItemActionForm
+                  onSubmit={async (payload) => {
+                    await axiosClient.post(`/api/items/addItem`, payload); // Edit API call
+                    fetchItems(); // Refresh items after update
+                  }}
+                />
               </FixedModal>
               <div className="relative cursor-pointer" ref={alertIconRef}>
                 <svg
@@ -292,6 +294,22 @@ function Home() {
                       fill="currentColor"
                       d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
                     ></path>
+                  </svg>
+                ) : searchText ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-4 h-4 text-green-700 hover:text-green-900 hover:cursor-pointer"
+                    onClick={() => {setSearchText(""); setFilteredItems(items);}}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18 18 6M6 6l12 12"
+                    />
                   </svg>
                 ) : (
                   <svg
