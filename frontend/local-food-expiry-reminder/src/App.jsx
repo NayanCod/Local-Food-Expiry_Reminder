@@ -10,6 +10,7 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import Signup from "./components/Signup";
 import { useEffect, useState } from "react";
+import NotFound from "./components/NotFound";
 
 
 function App() {
@@ -35,6 +36,8 @@ useEffect(() => {
           path="/home"
           element={isAuthenticated ? <Home /> : <Navigate to="/login"/>}
         />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
