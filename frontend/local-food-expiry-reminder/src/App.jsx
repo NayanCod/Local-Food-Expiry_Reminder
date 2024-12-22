@@ -12,7 +12,6 @@ import Signup from "./components/Signup";
 import { useEffect, useState } from "react";
 import NotFound from "./components/NotFound";
 
-
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 

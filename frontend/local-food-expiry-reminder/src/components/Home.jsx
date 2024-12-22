@@ -16,6 +16,7 @@ import Tabs from "./Tabs.jsx";
 import Logo from "./Logo.jsx";
 import AboutToExpiredItems from "./AboutToExpiredItems.jsx";
 import ItemActionForm from "./ItemActionForm.jsx";
+import Loading from "./Loading.jsx";
 
 function Home() {
   const {isDarkMode, toggleDarkMode} = useDarkMode();
@@ -182,7 +183,7 @@ function Home() {
 
   if (loading) {
     //Todo: make a loading page (skeleton type)
-    return <div>loading...</div>;
+    return <div><Loading/></div>;
   } else {
     return (
       //Todo: Make a dark mode theme
