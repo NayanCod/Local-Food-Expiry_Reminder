@@ -1,8 +1,10 @@
 import { useState } from "react";
 import emailjs from "emailjs-com";
 import { toast, ToastContainer } from "react-toastify";
+import { useDarkMode } from "../context/DarkModeContext";
 
 function Contact() {
+  const {isDarkMode} = useDarkMode();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -86,7 +88,7 @@ function Contact() {
   return (
     <>
       <ToastContainer />
-      <div className="w-full bg-gray-100 px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+      <div className={`w-full px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto ${isDarkMode ? 'bg-gray-800 transition-all duration-300' : 'bg-gray-100 text-gray-800 transition-all duration-300'}`}>
         <div className="max-w-xl mx-auto">
           {/* Section Heading */}
           <div className="text-center">

@@ -91,7 +91,6 @@ function Home() {
     const filtered = items.filter((item) =>
       item.name.toLowerCase().includes(searchValue)
     );
-    console.log(filtered);
 
     setFilteredItems(filtered);
     setSearchLoad(false);
@@ -285,7 +284,7 @@ function Home() {
               <h1 className="ml-6 mt-20 text-2xl md:text-3xl text-blue-600 font-semibold font-sans my-6">
                 Your Items
               </h1>
-              <div className={`flex items-center justify-between pl-4 pr-4 py-1.5 mr-6 mt-20 my-6 w-60 border rounded-full ${isDarkMode ? 'border-white' : 'border-gray-800'}`}>
+              <div className={`flex items-center justify-between pl-4 pr-4 py-1.5 mr-6 mt-20 my-6 md:w-60 border rounded-full ${isDarkMode ? 'border-white' : 'border-gray-800'}`}>
                 <input
                   type="text"
                   placeholder="Search items"
@@ -364,7 +363,7 @@ function Home() {
                 </div>
               </div>
             ) : (
-              <div className="my-4 overflow-y-auto h-[calc(100vh-200px)] scrollable-container">
+              <div className="my-4 overflow-y-auto h-[calc(100vh-200px)] hide-scroll">
                 {activeTab === "All" && (
                   <AllItems items={filteredItems} fetchItems={fetchItems} />
                 )}
