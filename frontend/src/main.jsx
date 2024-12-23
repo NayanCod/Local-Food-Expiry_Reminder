@@ -7,8 +7,9 @@ import { DarkModeProvider } from "./context/DarkModeContext.jsx";
 // Function to send the token to the BroadcastChannel
 const sendAuthToken = () => {
   const authToken = localStorage.getItem("token");
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   if (authToken) {
-    broadcast.postMessage({ type: "SET_AUTH_TOKEN", token: authToken });
+    broadcast.postMessage({ type: "SET_AUTH_TOKEN", token: authToken, apiBaseUrl: API_BASE_URL });
   }
 };
 

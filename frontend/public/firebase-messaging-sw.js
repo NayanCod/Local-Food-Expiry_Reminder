@@ -22,11 +22,13 @@ const messaging = firebase.messaging();
 
 const broadcast = new BroadcastChannel('auth-channel');
 let authToken = null;
+let apiBaseUrl = null;
 
 // Listen for messages on the BroadcastChannel
 broadcast.onmessage = (event) => {
   if (event.data && event.data.type === 'SET_AUTH_TOKEN') {
     authToken = event.data.token; // Save the token in a global variable
+    apiBaseUrl = event.data.apiBaseUrl;
     console.log('Service Worker received auth token:', authToken);
   }
 };
@@ -60,7 +62,7 @@ messaging.onBackgroundMessage(async (payload) => {
   
     // Use the token to make an API request
     try {
-      const apiResponse = await fetch('http://localhost:8080/api/notification', {
+      const apiResponse = await fetch(`${apiBaseUrl}/api/notification`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authToken}`,  // Use the token in the header

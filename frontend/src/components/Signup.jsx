@@ -27,7 +27,6 @@ function Signup() {
       // const {user} = response.data;
       if(response.data?.user){
         Navigate("/login");
-        alert("user successfully registered!");
         toast.success("Successfully registered!");
       }
     } catch (error) {
