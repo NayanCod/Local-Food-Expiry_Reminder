@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { broadcast } from "../main";
+import axiosClient from "../../axiosConfig";
 function Login({setIsAuthenticated}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,7 +13,7 @@ function Login({setIsAuthenticated}) {
   const handleLogin = async(e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/auth/login', {
+      const response = await axiosClient.post('/api/auth/login', {
         email,
         password,
       });
