@@ -14,7 +14,14 @@ connectDB();
 const app = express();
 const PORT = process.env.PORT || 8081
 
-app.use(cors());
+// For prod (for dev comment it)
+const corsOptions = {
+    origin: 'https://local-food-expiry-reminder-frontend.onrender.com',  // Update with your frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
