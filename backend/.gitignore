@@ -1,8 +1,8 @@
 # Node.js dependencies
 node_modules/
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
+/package-lock.json
+/yarn.lock
+/pnpm-lock.yaml
 
 
 config/serviceAccountKey.json
