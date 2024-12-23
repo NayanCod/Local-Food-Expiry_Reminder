@@ -1,8 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging } from "firebase/messaging";
-const API_KEY = import.meta.env.VITE_FIREBASE_API_KEY
 const firebaseConfig = {
-  apiKey: API_KEY,
+  apiKey: "AIzaSyDWsdv7_3OCYaFUkM-bvE4AVtpXpEBLp3A",
   authDomain: "food-expiry-remind.firebaseapp.com",
   projectId: "food-expiry-remind",
   storageBucket: "food-expiry-remind.firebasestorage.app",
