@@ -182,11 +182,9 @@ function Home() {
   }, []);
 
   if (loading) {
-    //Todo: make a loading page (skeleton type)
     return <div><Loading/></div>;
   } else {
     return (
-      //Todo: Make a dark mode theme
       <>
         <div className="h-screen flex flex-col overflow-y-auto hide-scroll">
           <ToastContainer />
