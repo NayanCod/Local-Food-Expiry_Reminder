@@ -1,3 +1,5 @@
+Here is the live hosted url of the site : [click to visit](https://local-food-expiry-reminder-frontend.onrender.com)
+
 # Local items expiry reminder - Local Setup Guide
 
 This guide will walk you through setting up and running the **Local food expiry reminder** API locally on your machine.
