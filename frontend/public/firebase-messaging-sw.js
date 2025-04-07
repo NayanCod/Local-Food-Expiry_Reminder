@@ -62,7 +62,7 @@ messaging.onBackgroundMessage(async (payload) => {
   
     // Use the token to make an API request
     try {
-      const apiResponse = await fetch(`${apiBaseUrl}/api/notification`, {
+      const apiResponse = await fetch(`${apiBaseUrl}api/notification`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${authToken}`,  // Use the token in the header
